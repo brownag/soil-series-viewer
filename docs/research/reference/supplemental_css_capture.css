@@ -1,0 +1,2335 @@
+body
+{
+  padding: 0;
+  margin: 0;
+  color: #000;
+  font-family: verdana,arial,helvetica,sans-serif;
+  background-color: #FFFFFF;
+  font-size: 11px;
+}
+img.largeimg
+{
+	cursor: pointer;
+	border: 1px solid black;
+	position: absolute;
+	z-index: 10;
+}
+img.smallimg
+{
+	cursor: pointer;
+}
+.cNRCSBlue
+{
+  background-color: #3366CC;
+  color: #FFFFFF;
+}
+.cUSDABackground
+{
+  background-color: #3e3e3e;
+  /*color: White;*/
+  margin: 0;
+  padding: 0;
+}
+.cLightBody
+{
+  background-color: White;
+  color: Black;
+}
+.cRightNum 
+{
+  text-align:right;
+  padding-right:.5em;
+  padding-top:0;
+  padding-bottom:0;
+}
+.cXtraPad  
+{
+  padding-top:.5em;
+  padding-bottom:.45em;
+}
+/*THESE STYLE TAGS REPRODUCE THE USDA BANNER MENU ITEMS*/
+td#USDABannerButtons, td#USDABannerTitle, #USDABannerButtons, #USDABannerTitle
+{
+  margin-left: 0px;
+  height: 19px;
+  vertical-align: bottom;
+  border: 1px solid Black;
+  background-color: #999999;
+  background-image: url(../images/top_nav_fill.gif);
+}
+td#USDABannerButtons, #USDABannerButtons
+{
+  text-align: right;
+  border-left: 1px none Black;
+}
+td#USDABannerButtons a, .cSelectedUSDABannerButton, td#USDABannerButtons a:visited, td#USDABannerButtons a:hover,
+#USDABannerButtons a, #USDABannerButtons a:visited, USDABannerButtons a:hover
+{
+  height: 100%;
+  font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  text-decoration: none;
+  text-align: center;
+  padding-left: 1ex;
+  padding-right: 1ex;
+}
+td#USDABannerTitle, #USDABannerTitle
+{
+  border-right: 1px none Black;
+  text-align: left;
+  vertical-align: baseline;
+  font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: Bold;
+  color: Yellow; /*#FFE401; #FFCC66;*/
+  padding-left: 1ex;
+}
+td#USDABannerButtons a:link, td#USDABannerButtons a:visited, #USDABannerButtons a:link, #USDABannerButtons a:visited
+{
+  color: #FFFFFF;
+  background-color: #999999; /*border-right: 1px dashed White;*/
+  background-image: url(../images/top_nav_fill.gif);
+}
+td#USDABannerButtons a:hover, #USDABannerButtons a:hover
+{
+  font-weight: normal;
+  color: #000000;
+  background-color: #CCCCCC;
+  border-left: 1px solid Black;
+  background-image: url(../images/top_nav_selected.gif);
+}
+#USDABannerButtons, #USDABannerTitle {
+  border: 0;
+}
+.cSelectedUSDABannerButton
+{
+  font-weight: normal;
+  color: #000000;
+  background-color: #CCCCCC;
+  border-left: 1px solid Black; /*border-right: 1px dashed White;*/
+  background-image: url(../images/top_nav_selected.gif);
+}
+.cUSDAButtonSpacer
+{
+  background-image: url(../images/top_nav_spacer.gif);
+  width: 1px;
+}
+td#USDABannerButtons a.cUSDARightMenu, #USDABannerButtons a.cUSDARightMenu
+{
+  border-right: 1px none #999999;
+}
+TD.footer A, A.footer
+
+{
+  font-size: 10px;
+  color: #000099;
+  font-family: verdana,arial,helvetica,sans-serif;
+  white-space: nowrap;
+  text-decoration: none;
+}
+TD.footer A:hover
+{
+  color: #000099;
+  text-decoration: underline;
+}
+#SpanVers
+{
+  color: Black;
+  font-family: verdana,arial,helvetica,sans-serif;
+  font-size: 10px;
+}
+
+#PageFooter {
+	width: 100%;
+	left: 0px;
+	vertical-align: top;
+	display: block;
+	background: #FFFFFF url(../images/footer_corner_left.gif)  no-repeat left bottom;
+	/*border: 1px blue solid;*/
+	border-top: 1px black solid;
+	visibility: visible;
+	margin-bottom:0;
+}
+.cUSDARightNav, A.cUSDARightNav, A.cUSDARightNav:visited, A.cUSDARightNav:hover
+{
+  font-family: Verdana;
+  font-size: 10px;
+  font-weight: bold;
+  background-color: #F2F2F2; /*#E7ECF2;*/
+  color: #000099;
+}
+A.cUSDARightNav, A.cUSDARightNav:visited {
+	text-decoration: none;
+	width: 100%;
+}
+A.cUSDARightNav:hover {
+	text-decoration: underline;
+	width: 100%;
+}
+.cUSDALeftNav, A.cUSDALeftNav, A.cUSDALeftNav:visited, A.cUSDALeftNav:hover
+{
+	font-family: Verdana;
+	font-size: 10px;
+	font-weight: normal;
+	background-color: #C5C5C5;
+	color: #000099;
+}
+A.cUSDALeftNav, A.cUSDALeftNav:visited {
+	text-decoration: none;
+	width: 100%;
+}
+A.cUSDALeftNav:hover {
+	text-decoration: underline;
+	width: 100%;
+}
+/* Text of class accessibility will not be displayed but will be read by screen reader */
+.accessibility
+{
+  display: none;
+}
+
+/* Form Field Styles */
+.searchform
+{
+  font-family: Verdana;
+  font-size: 11px;
+  width: 116px; /* height: 14px; */
+  margin-bottom: 0px;
+}
+/* Bread Crumb Style */
+.Breadcrumb, A.Breadcrumb, A.Breadcrumb:hover
+{
+  font-family: Verdana;
+  font-size: 9px;
+  font-weight: normal;
+  color: #000000;
+}
+A.Breadcrumb
+{
+  color: blue;
+  font-family: Verdana;
+  text-decoration: none;
+}
+A.Breadcrumb:hover
+{
+  color: blue;
+  font-family: Verdana;
+  text-decoration: underline;
+}
+
+/*These Style tags reproduce the Section bars*/
+.cFAQBanner, .cContactUsBanner, .cAboutBanner, .cHelpBanner, .cConPBanner, .cSearchBanner, .cReportsBanner, .cErrorBanner
+{
+  font-family: Helvetica, Arial, Geneva, sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+  vertical-align: baseline;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  color: #F0F0F0; /*White*/
+}
+.cAboutBanner {  background-color: #35106E;}
+.cConPBanner, .cReportsBanner, .cReportsHeadlineBar {  background-color: #7F1C1C;}
+.cErrorBanner {  background-color: #FFFF33;}
+.cFAQBanner   {  background-color: #006400;}
+.cHelpBanner  {  background-color: #BD6500;}
+.cSearchBanner{  background-color: #228B22;}
+.cContactUsBanner {  background-color: #B32F01;}
+.cError
+{
+  background-color: Yellow;
+  color: Blue;
+  font-size: 1.25em;
+  font-weight: bold;
+  padding-top:.5em;
+  padding-bottom: .5em;
+}
+
+.cMInput { FONT-SIZE: 11px; WIDTH: 5em; TEXT-ALIGN: right; margin-top:.1em; margin-right: .3em; margin-left:  .3em;}
+.MatrixTable TD { HEIGHT: 1.1em }
+.MatrixTable TD.Xtra, TD.XtraNRB { BORDER-RIGHT: black 1px solid; PADDING-BOTTOM: 0.2em; PADDING-TOP: 0.7em }
+.MatrixTable TD.XtraNRB { border-right: none; text-align:right;} 
+#MatrixContainer { BORDER-RIGHT: red 1px; BORDER-TOP: red 1px; LEFT: 0px; OVERFLOW: auto; BORDER-LEFT: red 1px; WIDTH: 100%; BORDER-BOTTOM: red 1px; POSITION: relative; TOP: 0%; HEIGHT: 72%; BACKGROUND-COLOR: white }
+#RCList { BORDER-RIGHT: #4682B4 1px solid; LEFT: 0px; OVERFLOW: auto; WIDTH: 25%; POSITION: relative; TOP: 0px; HEIGHT: 100% }
+#PracList { BORDER-RIGHT: green 1px; BORDER-TOP: green 1px; LEFT: 25%; OVERFLOW: auto; BORDER-LEFT: green 1px; WIDTH: 75%; BORDER-BOTTOM: green 1px; POSITION: absolute; TOP: 0px; HEIGHT: 100% }
+.cHeaderTableRow TD { BORDER-RIGHT: black 1px solid; MARGIN-LEFT: 0.2em }
+.cTableRow TD { BORDER-RIGHT: black 1px solid; MARGIN-LEFT: 0.2em }
+.cAltTableRow TD { BORDER-RIGHT: black 1px solid; MARGIN-LEFT: 0.2em }
+.cNoRightBorder { BORDER-RIGHT: none; }
+
+.cTableRow 
+{
+  background-color:White;
+}
+.cAltTableRow 
+{
+	background-color: #C0C0C0; /* WhiteSmoke; */
+}
+#RCList TD.XtraNRB 
+{
+  font-size:.79em;
+  color: Black;
+  padding-top: 0em; 
+  padding-bottom:.15em;
+  font-weight:normal;
+}
+#PracList TD.Xtra 
+{
+  padding-top:.9em;
+  padding-bottom:.15em;
+  font-weight:normal;
+}
+.cHeaderTableRow 
+{
+  vertical-align:bottom;
+  font-weight:bold;
+  font-size:.9em;
+}
+/*
+#xMatrixContainer {
+	width: auto;
+   overflow-x:hidden;
+	overflow-y: scroll;
+}
+#RCList {
+   overflow-x:scroll;
+	overflow-y: hidden;
+}
+#PracList {
+   overflow-x:scroll;
+	overflow-y: hidden;
+}
+*/
+.cRow 
+{
+	/*width: auto;*/
+	display: block;
+	vertical-align: middle;
+	font-weight:normal;
+	padding-left: .5ex;
+	padding-right: .5ex;
+	border: 1px dashed blue;
+	
+}
+.cCel1, .cCelW, .cCelA, .cCelH {
+	padding-top: .5em;
+	/*display: block;*/
+	border: 1px solid red;
+	white-space: nowrap;
+}
+.cCelH {
+	padding-top: 0;
+	height: 1em;
+	border: 1px solid green;
+	vertical-align: bottom;
+	font-weight: bold;
+}
+.cCelA {
+	width:auto;
+}
+.cCelW {
+	width: 100%;
+}
+.cCel1 {
+	width: 10em;
+}
+.cDashFill {
+	background-image: url(../images/dash1.gif);
+	background-repeat: repeat-x;
+	width: 100%;
+	clear: right;
+}
+.cAlert 
+{
+  background-color: Yellow;
+  color:Blue;
+  font-style: italic;
+}
+@media print {
+  .cUSDABackground {
+    background-color:white;
+  }      
+}
+.PanelCollapser
+{
+PADDING-LEFT: 4px;
+FONT-SIZE: 8pt; PADDING-BOTTOM: 2px;
+COLOR: #ffffff; PADDING-TOP: 2px;
+FONT-FAMILY: tahoma;
+BACKGROUND-COLOR: #0155a9
+}
+
+.PanelMenuItemSeperator
+{ 
+WIDTH: 1px;
+COLOR: #ffffff;
+MARGIN-RIGHT: 4px;
+BACKGROUND-COLOR: #ffffff
+}
+
+.SectionForm
+{ 
+PADDING-RIGHT: 10px;
+PADDING-LEFT: 10px;
+FONT-SIZE: 8pt;
+PADDING-BOTTOM: 10px;
+PADDING-TOP: 10px;
+FONT-FAMILY: tahoma;
+LETTER-SPACING: 0px
+}
+
+.FieldLabel 
+{
+FONT-WEIGHT: bold;
+TEXT-ALIGN: right;
+FONT-SIZE: 8pt;
+FONT-FAMILY: tahoma;
+LETTER-SPACING: 0px
+}
+
+.FormButton 
+{
+FONT-WEIGHT: bold;
+FONT-SIZE: 8pt;
+COLOR: #ffffff;
+FONT-FAMILY: tahoma;
+BACKGROUND-COLOR: #009900
+}
+A, A.cAnnouncements
+{
+  color: #0000FF;
+  font-size: 11px;
+}
+P
+{
+  font-family: verdana,arial,helvetica,sans-serif;
+  font-size: 11px;
+  color: #000000;
+}
+.lgtext, BIG
+{
+  font-size: 15px;
+  font-family: verdana,arial,helvetica,sans-serif;
+}
+.talltext
+{
+  line-height: 1.5em;
+}
+TABLE, TR, TD, TH, DL, DD, LI, UL, OL, SELECT, INPUT, .text
+{
+  font-size: 12px;
+  font-family: verdana,arial,helvetica,sans-serif;
+}
+.smtext, SMALL
+{
+  font-size: 11px;
+  font-family: verdana,arial,helvetica,sans-serif;
+}
+.minitext
+{
+  font-size: 10px;
+  font-family: verdana,arial,helvetica,sans-serif;
+}
+SELECT, INPUT
+{
+  font-family: arial,helvetica,sans-serif;
+}
+TABLE.searchArea
+{
+  background-color: #f1f1f1;
+}
+TABLE.footerBar
+{
+  background-color: #ececec;
+}
+THEAD TH
+{
+  background-color: #ddd;
+  text-align: left;
+}
+OL, UL
+{
+  line-height: 1.4em;
+  list-style-type: disc;
+}
+UL
+{
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+PRE
+{
+  font-size: 12px;
+  font-family: monospace;
+  white-space: pre;
+}
+CAPTION
+{
+  font: bold 12px verdana,arial,helvetica,sans-serif;
+  text-align: left;
+}
+HR
+{
+  color: #666;
+}
+TD H3
+{
+  margin-top: 13px;
+}
+TD H2
+{
+  margin-top: 13px;
+}
+TD H1
+{
+  margin-top: 13px;
+}
+H1
+{
+  font: bold 21px verdana,arial,helvetica,sans-serif;
+  color: #666;
+}
+H2
+{
+  font: bold 19px verdana,arial,helvetica,sans-serif;
+  color: #666;
+}
+H3
+{
+  font: bold 17px verdana,arial,helvetica,sans-serif;
+  color: #666;
+  padding-top: 2px;
+}
+H4
+{
+  font: bold 15px verdana,arial,helvetica,sans-serif;
+  color: #666;
+  padding-top: 2px;
+}
+H5
+{
+  font: bold 14px verdana,arial,helvetica,sans-serif;
+  color: #666;
+  padding-top: 2px;
+}
+H6
+{
+  font: bold 13px verdana,arial,helvetica,sans-serif;
+  color: #666;
+  padding-top: 2px;
+}
+A:hover
+{
+  color: #008866;
+  text-decoration: underline;
+}
+A.noline, A.noline:hover, A.hoverline
+{
+  text-decoration: none;
+}
+A.hoverline:hover
+{
+  text-decoration: underline;
+}
+INPUT.searchBox
+{
+  font: 11px arial,helvetica,sans-serif;
+  width: 102px;
+}
+SPAN.subnavtitle
+{
+  font: bold 13px verdana,arial,helvetica,sans-serif;
+  color: #000;
+  text-decoration: none;
+}
+TD.subnav
+{
+  font-size: 10px;
+  color: #000;
+  font-family: verdana,arial,helvetica,sans-serif;
+  text-decoration: none;
+}
+TD.subnav A
+{
+  font-size: 10px;
+  color: #000;
+  font-family: verdana,arial,helvetica,sans-serif;
+  text-decoration: none;
+}
+TD.subnav A:hover
+{
+  color: #444;
+  text-decoration: underline;
+}
+.note
+{
+  border-right: #fff 1px solid;
+  padding-right: 10px;
+  border-top: #fff 1px solid;
+  padding-left: 10px;
+  padding-bottom: 10px;
+  font: bold 12px verdana,arial,helvetica,sans-serif;
+  border-left: #fff 1px solid;
+  color: #aa3333;
+  padding-top: 10px;
+  border-bottom: #fff 1px solid;
+  background-color: #f1f1f1;
+}
+.smallnote
+{
+  border-right: #fff 1px solid;
+  padding-right: 10px;
+  border-top: #fff 1px solid;
+  padding-left: 10px;
+  font-size: 10px;
+  padding-bottom: 10px;
+  border-left: #fff 1px solid;
+  color: #aa3333;
+  padding-top: 10px;
+  border-bottom: #fff 1px solid;
+  font-family: verdana,arial,helvetica,sans-serif;
+  background-color: #f9f9f9;
+}
+.cleanbox
+{
+  border-right: #fff 1px solid;
+  padding-right: 10px;
+  border-top: #fff 1px solid;
+  padding-left: 10px;
+  font-size: 11px;
+  padding-bottom: 10px;
+  border-left: #fff 1px solid;
+  padding-top: 10px;
+  border-bottom: #fff 1px solid;
+  font-family: verdana,arial,helvetica,sans-serif;
+  background-color: #f1f1f1;
+}
+.documents
+{
+  border-right: #fff 1px solid;
+  padding-right: 10px;
+  border-top: #fff 1px solid;
+  padding-left: 10px;
+  font-size: 11px;
+  padding-bottom: 10px;
+  border-left: #fff 1px solid;
+  padding-top: 10px;
+  border-bottom: #fff 1px solid;
+  font-family: verdana,arial,helvetica,sans-serif;
+  background-color: #f1f1f1;
+}
+TR.footerSep
+{
+  background-color: White; /* #666666;*/
+  color: Black;
+}
+TD.backtotop
+{
+  width: 171px;
+  white-space: nowrap;
+}
+TD.backtotop A
+{
+  font: 10px verdana,arial,helvetica,sans-serif;
+  color: #000;
+  text-decoration: none;
+}
+TD.backtotop A:hover
+{
+  color: #444;
+  text-decoration: underline;
+}
+TD.footer A, A.footer
+{
+  font-size: 10px;
+  color: #000099;
+  font-family: verdana,arial,helvetica,sans-serif;
+  white-space: nowrap;
+  text-decoration: none;
+}
+TD.footer A:hover, A.footer:hover
+{
+  text-decoration: underline;
+}
+TD.footer A:visited, A.footer:visited
+{
+  color: #660099;
+}
+@media Screen
+{
+  .lgtext
+  {
+    font-size: 14px;
+  }
+  BODY, P, TABLE, TR, TD, TH, DL, DD, OL, UL, LI, .text, .note
+  {
+    font-size: 11px;
+  }
+  .smtext
+  {
+    font-size: 10px;
+  }
+  .minitext, .smallnote
+  {
+    font-size: 9px;
+  }
+}
+
+@media Print
+{
+  .goback, .noprint
+  {
+    display: none;
+  }
+}
+/*END TAGS FROM style.css*/
+
+/*START TAGS FROM portal.css*/
+.cHeaderBox, A.cHeaderBox, A.cHeaderBox:hover
+{
+  background-color: #3165CE;
+  font-size: 16px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  color: #FFFFFF;
+}
+A.cHeaderBox, A.cHeaderBox:hover
+{
+  text-decoration: none;
+}
+.cSlimButton
+{
+  font-size: 80%;
+  font-weight: bold;
+}
+.cBGColorLight
+{
+  background-color: #ECFFFF;
+}
+.cBGColorMid
+{
+  background-color: #A8BBFF;
+}
+.cBGColorMid2
+{
+  background-color: #99CCCC;
+}
+.cBGColorDark
+{
+  background-color: #6386FF;
+}
+.cBGWhite
+{
+  background-color: #FFFFFF;
+}
+.cBodyText
+{
+  font-size: 11px;
+  color: #000000;
+}
+.cBullet
+{
+  background-color: #00a886; /* #99CCCC; */
+  color: white;
+  font-size: 11px;
+}
+.cCenter
+{
+  text-align: center;
+  vertical-align: middle;
+}
+.cDisabledLink
+{
+  color: gray;
+  font-size: 11px;
+}
+.cEditBar
+{
+  color: #000000;
+  background-color: #A8BBFF;
+  text-align: left;
+  vertical-align: middle;
+  height: 16px;
+  /*background-image: url(../images/bg_pagelet.jpg);*/
+}
+.cEditTitle
+{
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 15px;
+  font-weight: bold;
+  font-style: normal;
+  color: #000000;
+}
+.cEISNumber
+{
+  font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+  font-size: 30px;
+  font-weight: bold;
+  color: white;
+  background-color: #99CCCC;
+  text-align: center;
+}
+.cError
+{
+  background-color: Yellow;
+  color: Blue;
+  font-size: 11px;
+}
+.cNew
+{
+  background-color: Yellow;
+  color: Blue;
+}
+.cNRCSBlue
+{
+  background-color: #3366CC;
+  color: #FFFFFF;
+}
+/*
+.cTblCISNumber
+{
+  table-layout: fixed;
+  padding: 4 4 4 4;
+  border: 0;
+  width: 50px;
+  background-color: #99CCCC;
+  font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+  font-size: 30px;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+}
+*/
+.cScreenTitle
+{
+  font-size: 18px;
+  font-weight: bold;
+  font-style: normal;
+  color: black;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.cTabs
+{
+  cursor: pointer;
+}
+.cCuffLinks
+{
+  background-color: #00a886; /* #99CCCC; */
+  color: white;
+  font-size: 11px;
+}
+A.cPageletLinkDis, .cPageletDis
+{
+  font-size: 11px;
+  color: Gray;
+  font-family: Verdana;
+  text-decoration: none;
+}
+A.cPageletLink, A.cPageletLinkBlack
+{
+  font-size: 11px;
+  color: blue;
+  background-color: transparent;
+  font-family: Verdana;
+  text-decoration: none;
+}
+A.cPageletLink:hover, A.cPageletLinkBlack:hover
+{
+  font-size: 11px;
+  color: blue;
+  font-family: Verdana;
+  text-decoration: underline;
+}
+A.cPageletLinkBlack, A.cPageletLinkBlack:hover
+{
+  color: black;
+  font-weight: normal;
+}
+A.cMoreLink, A.cMoreLink:hover
+{
+  font-size: 10px;
+  font-weight: normal;
+  color: #00886B;
+  font-family: Verdana;
+  text-decoration: none;
+}
+A.cMoreLink:hover
+{
+  text-decoration: underline;
+}
+.cPageLet, .cPageLetBorder, .cPageLetBlack, .cSpecialPageLet, .cSpecialPageLetBorder, .cSpecialPageLet2, .cSpecialPageLet2Border, .cSpecialPageLetR, .cSpecialPageLetRBorder
+{
+  font-size: 13px;
+}
+.cPageLet, .cPageLetBorder
+{
+  background-color: #A8BBFF; /*#00a886;*/
+  color: Black;
+  font-weight: bold;
+}
+.cPageLet
+{
+  background-image: url(../images/PageleteBG.jpg);
+  background-position: top left; /*background-repeat: no-repeat	*/
+}
+.cPageLetBlack
+{
+  background-color: White;
+  color: Black;
+  font-weight: bold;
+}
+.cAltPageLetFill
+{
+  background-color: White;
+  color: Black;
+}
+.cPageLetFill
+{
+  background-color: #f7f7f7;
+  color: Black;
+}
+.cAltPageLet
+{
+  background-color: #6386FF; /*#00a886;*/
+  color: White;
+  font-weight: bold;
+}
+.cSpecialPageLet, .cSpecialPageLetBorder
+{
+  background-color: #E1C73F; /* #FFCC66; */ /*#00a886;*/
+  color: Black;
+  font-weight: bold;
+}
+.cSpecialPageLet2, .cSpecialPageLet2Border
+{
+  background-color: #FFCC66; /*#97FF66;*/ /*#00a886;*/
+  color: #000000; /*#BB0000;*/
+  font-weight: bold;
+}
+.cSpecialPageLet2
+{
+  background-image: url(../images/SpecialPageLet2BG.jpg);
+  background-position: top left; /*background-repeat: no-repeat	*/
+}
+
+.cSpecialPageLetR, .cSpecialPageLetRBorder
+{
+  background-color: #BB0000; /*#97FF66;*/ /*#00a886;*/
+  color: #FFFFFF;
+  font-weight: bold;
+}
+.cPageLetHdr
+{
+  font-size: 14px;
+  font-weight: bold;
+}
+TR.cHeaderRow
+{
+  background-color: #A8BBFF; /*#00a886;*/
+  color: Black;
+  font-weight: normal;
+  text-align: left;
+  vertical-align: bottom;
+}
+TR.cAltHeaderRow, .cAltHeaderBox, .cAltHeaderBoxR, .cAltHeaderDesc
+{
+  background-color: #ECECEC; /*#00a886;*/
+  color: Black;
+  font-weight: bold;
+  text-align: left;
+  vertical-align: bottom;
+}
+.cAltHeaderDesc
+{
+  font-weight: normal;
+}
+.cAltHeaderBoxR
+{
+  text-align: right;
+}
+.cTinyFiller
+{
+  font-size: 8px;
+}
+.cUserName
+{
+  font-size: 20px;
+  font-weight: bold;
+  font-style: normal;
+  color: white;
+  text-align: left;
+  vertical-align: middle;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.cSmallText
+{
+  font-size: 10px;
+  color: blue;
+  font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+}
+.cWhiteText
+{
+  color: #FFFFFF;
+}
+.cBlackText
+{
+  color: #000000;
+}
+.cHeaderDate
+{
+  color: #000000;
+  font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 100%;
+}
+.cHeaderDateRev
+{
+  color: #FFFFFF;
+  font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+  font-weight: normal;
+  font-size: 80%;
+}
+#menubarRow
+{
+  background-color: #666666;
+  color: #FFFFFF;
+}
+A.cMenuButton
+{
+  background-color: transparent;
+  color: #F0F0F0;
+  text-decoration: none;
+  font-weight: bold;
+}
+.cMenuSep
+{
+  background-color: transparent;
+  color: #B1B1B1;
+}
+.cDataLabel, .cDataLabelC, .cDataLabelR, .cDataLabelW
+{
+  font-weight: bold;
+  vertical-align: bottom;
+}
+.cDataEntry, .cDataEntryR, .cDataEntryC, .cDataEntryW, .cDataEntryDis, .cDataEntryRNeg
+{
+  font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+  font-weight: normal;
+  vertical-align: bottom;
+}
+.cDataEntryW, .cDataLabelW
+{
+  width: 100%;
+  text-align: left;
+}
+.cDataEntryL, .cDataLabelL
+{
+  text-align: left;
+}
+.cDataEntryC, .cDataLabelC
+{
+  text-align: center;
+}
+.cDataEntryR, .cDataLabelR, .cDataEntryRNeg
+{
+  text-align: right;
+}
+.cDataEntryDis
+{
+  background-color: #DCDCDC;
+}
+.cDataEntryRNeg
+{
+  color: #ff0033;
+}
+.cSideLabel
+{
+  text-align: right;
+  vertical-align: top;
+  padding-right: 1ex;
+  font-weight: normal;
+}
+.cAltTableRow
+{
+  background-color: #ECECEC;
+  color: #000000;
+}
+.cYelTableRow
+{
+  background-color: Yellow;
+  color: #000000;
+}
+.cTableRow
+{
+  background-color: #FFFFFF;
+  color: #000000;
+}
+.cFilterRow
+{
+  background-color: #D3D3D3;
+  color: Black;
+}
+.cHeaderRow
+{
+  background-color: #6386FF;
+  color: White;
+  text-align: center;
+  vertical-align: bottom;
+  font-weight: bold;
+}
+.cFGDark
+{
+  color: Blue;
+  background-color: transparent;
+}
+A.cToggleLink, A.cToggleLink:hover, A.cToggleLinkC, A.cToggleLinkC:hover
+{
+  font-size: 75%;
+  text-decoration: underline;
+  color: black;
+  background-color: transparent;
+  font-weight: bold;
+}
+A.cToggleLink:hover
+{
+  text-decoration: underline;
+  color: Maroon;
+}
+A.cToggleLinkC, A.cToggleLinkC:hover
+{
+  text-align: center;
+}
+.cSplashRow, .cSplashRowText, a.cSplashRowLink, a.cSubMenuLink
+{
+  background-color: #000000;
+  color: #FFFFFF;
+}
+a.cSplashRowLink:hover
+{
+  background-color: #FFFFFF;
+  color: #000000;
+}
+a.cSubMenuLink, a.cSubMenuLink:hover
+{
+  text-decoration: none;
+}
+a.cSubMenuLink:hover
+{
+  color: #FFCC00;
+  background-color: #333333;
+}
+.cPortalCanvas
+{
+  background-color: #9A9A9A;
+  color: White;
+}
+.cTabBackground
+{
+  background-color: White; /* #9A9A9A;*/
+  color: Black; /* White;*/
+}
+.cTabSelected
+{
+  background-color: #ECEBE6;
+  color: Black;
+}
+/*.cTabOff, .cTabLOff {*/
+.cTabOnn, .cTabLOnn, a.cTab, a.cTab:hover
+{
+  font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+  padding-left: 2ex;
+  padding-right: 2ex;
+}
+.cTabFill
+{
+  background-color: White;
+  color: Black;
+  border-top: 1px black none;
+  border-right: 1px black none;
+  border-left: 1px black none;
+  border-bottom: 1px black solid;
+}
+.cTabOff, .cTabLOff
+{
+  background-color: #CCCCCC;
+  color: Black;
+  border-top: 1px black solid;
+  border-right: 1px black solid;
+  border-bottom: 1px black solid;
+  border-left: 1px black none;
+}
+.cTabOnn, .cTabLOnn
+{
+  background-color: #ECEBE6;
+  font-weight: bold;
+  border-top: 1px black outset; /*#ECEBE6 solid*/
+  border-right: 3px #ECEBE6 outset;
+  border-bottom: 1px #ECEBE6 solid;
+  border-left: 1px #ECEBE6 outset;
+  color: Black;
+}
+.cTabLOff, .cTabLOnn
+{
+  border-left: 1px black solid;
+}
+a.cTab, a.cTab:hover
+{
+  text-decoration: none;
+  background-color: transparent;
+  color: Black;
+}
+a.cTab:hover
+{
+  color: #000000;
+  background-color: #FFD700; /* #00886B;*/
+}
+.cButtonBar
+{
+  background-color: #9A9A9A;
+  color: #FFFFFF;
+  text-align: left;
+  width: 100%;
+}
+A.cAnnouncements
+{
+  text-decoration: none;
+}
+A.cAnnouncements:hover
+{
+  color: Blue;
+  text-decoration: underline;
+}
+A.cAnnouncements:visited
+{
+  color: Green;
+  font-weight: bold;
+}
+A.cSideMenu, .cSideMenuHeader, .cSideMenuSubHeader, .cSideMenuDisabled
+{
+  background-color: #ECECEC;
+  color: #000000;
+  text-decoration: none;
+}
+.cSideMenuDisabled
+{
+  background-color: #ECECEC;
+  border: thin none #FFFFFF;
+  color: #929292;
+  text-decoration: none;
+}
+.cSideMenuHeader, .cSideMenuSubHeader
+{
+  background-color: #ECECEC;
+  border: thin solid #ECECEC;
+  color: #000000;
+  cursor: default;
+  font-weight: bold;
+  padding-left: 1px;
+  width: 100%;
+}
+.cSideMenuHeader
+{
+  background-color: #FFFFFF;
+  color: #000000;
+  vertical-align: Top;
+}
+.cSideMenuTD
+{
+  border: thin solid #ECECEC;
+  width: 100%;
+}
+.cSideMenuTR
+{
+  background-color: #ECECEC;
+  width: 100%;
+}
+.cSidePointer
+{
+  background-color: #FFFFFF;
+}
+/*.cAppIcon { border: 1px #000000 solid; }*/
+.cAppIcon
+{
+  border-bottom: 2px #000000 solid;
+  border-right: 2px #000000 solid;
+  border-left: 2px solid #C6C6C6;
+  border-top: 2px #C6C6C6 solid;
+}
+.cAppIcon:active
+{
+  border-left: 2px #000000 solid;
+  border-top: 2px #000000 solid;
+  border-bottom: 2px solid #C6C6C6;
+  border-right: 2px #C6C6C6 solid;
+}
+.cSimpleBorder
+{
+  border: 1px #000000 solid;
+}
+#SpanVers
+{
+  color: Black;
+  font-family: verdana,arial,helvetica,sans-serif;
+  font-size: 10px;
+}
+a.cHeadlines, a.cHeadlines:hover, .cHeadlines
+{
+  font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+  font-size: 1.1em;
+  font-weight: bold;
+  color: Black;
+  background-color: transparent;
+  text-decoration: none;
+}
+a.cHeadlines:hover
+{
+  text-decoration: underline;
+}
+.cDidYouKnow
+{
+  font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+  color: black;
+}
+.cDidYouKnow:first-letter
+{
+  font-size: 300%;
+  float: left;
+  vertical-align: text-top;
+  margin-right: 4px;
+  font-weight: bold;
+  color: #006633;
+}
+.cDidYouKnow:first-line
+{
+  color: #006633;
+  font-variant: small-caps;
+  font-weight: bold;
+}
+/*END TAGS FROM portal.css*/
+
+/*START TAGS FROM FontSizes.css*/
+/* *
+{
+  font-size: 100%;
+}
+*/
+.c150, .c150C {  font-size: 150%;}
+.c145, .c145C {  font-size: 145%;}
+.c140, .c140C {  font-size: 140%;}
+.c135, .c135C {  font-size: 135%;}
+.c130, .c130C {  font-size: 130%;}
+.c125, .c125C {  font-size: 125%;}
+.c120, .c120C {  font-size: 120%;}
+.c115, .c115C {  font-size: 115%;}
+.c110, .c110C {  font-size: 110%;}
+.c100, .c100C {  font-size: 100%;}
+.c95, .c95C   {  font-size: 95%;}
+.c90, .c90C   {  font-size: 90%;}
+.c85, .c85C   {  font-size: 85%;}
+.c80, .c80C   {  font-size: 80%;}
+.c75, .c75C   {  font-size: 75%;}
+.c70, .c70C   {  font-size: 70%;}
+.c70C, .c75C, .c80C, .c85C, .c90C, .c95C, .c100C, .c115C, .c120C, .c125C, .c130C, .c135C, .c140C, .c145C, .c150C
+{
+  text-align: center;
+}
+.cAltHeaderDesc
+{
+  font-size: 80%;
+}
+/*END TAGS FROM FontSizes.css*/
+
+/*START TAGS FROM USDA.css*/
+/*These style were taken from usdastyles.css*/
+/* Bodytext Styles */
+.BodyTextBlack
+{
+  font-family: Verdana;
+  font-size: 11px;
+  font-weight: normal;
+  color: #000000;
+}
+
+.BodyTextRed
+{
+  font-family: Verdana;
+  font-size: 10px;
+  font-weight: normal;
+  color: #ff0000;
+}
+
+.BodyTextRedBold
+{
+  font-family: Verdana;
+  font-size: 11px;
+  font-weight: bold;
+  color: #ff0000;
+}
+
+.BodyTextBlue
+{
+  font-family: Verdana;
+  font-size: 11px;
+  font-weight: normal;
+  color: #000099;
+}
+
+.FootTextBlue
+{
+  font-family: Verdana;
+  font-size: 10px;
+  font-weight: normal;
+  color: #000099;
+}
+
+/* Column Heading Styles */
+.BodyTextBlackBold
+{
+  font-family: Verdana;
+  font-size: 11px;
+  font-weight: bold;
+  color: #000000;
+}
+
+.BodyTextBlueBold
+{
+  font-family: Verdana;
+  font-size: 11px;
+  font-weight: bold;
+  color: #000099;
+}
+
+/* Sub Heading Styles */
+
+.HdrBlue
+{
+  font-family: Verdana;
+  font-size: 13px;
+  font-weight: normal;
+  color: #000099;
+}
+
+.HdrBlack
+{
+  font-family: Verdana;
+  font-size: 13px;
+  font-weight: normal;
+  color: #000000;
+}
+
+.HdrBlueBold
+{
+  font-family: Verdana;
+  font-size: 13px;
+  font-weight: bold;
+  color: #000099;
+}
+
+.HdrBlackBold
+{
+  font-family: Verdana;
+  font-size: 13px;
+  font-weight: bold;
+  color: #000000;
+}
+
+
+.BodyTextBlackSmall
+{
+  font-family: Verdana;
+  font-size: 10px;
+  font-weight: normal;
+  color: #000000;
+}
+
+.BodyTextBlueSmall
+{
+  font-family: Verdana;
+  font-size: 10px;
+  font-weight: normal;
+  color: #000099;
+}
+
+.BodyTextBlueSmallBold
+{
+  font-family: Verdana;
+  font-size: 10px;
+  font-weight: bold;
+  color: #000099;
+}
+
+
+.ErrorMessageNormal
+{
+  font-family: Verdana;
+  font-size: 11px;
+  font-weight: normal;
+  color: #FF0000;
+}
+
+.ErrorMessageBold
+{
+  font-family: Verdana;
+  font-size: 11px;
+  font-weight: bold;
+  color: #FF0000;
+}
+
+.WhiteBackgroundColor
+{
+  background-color: #FFFFFF;
+  margin-bottom: 0px;
+}
+
+.BlackBackgroundColor
+{
+  background-color: #000000;
+  margin-bottom: 0px;
+}
+
+.LeftNavBackgroundColor
+{
+  background-color: #C5C5C5;
+  margin-bottom: 0px;
+  font-family: Verdana;
+  font-size: 11px;
+  font-weight: normal;
+}
+
+.nopadding
+{
+  line-height: 0;
+  margin: 0px;
+  padding: 0px;
+}
+
+/* Text of class accessibility will not be displayed but will be read by screen reader */
+.accessibility
+{
+  display: none;
+}
+
+/* Form Field Styles */
+.searchform
+{
+  font-family: Verdana;
+  font-size: 11px;
+  width: 116px; /* height: 14px; */
+  margin-bottom: 0px;
+}
+
+.audiencebox
+{
+  font-family: Verdana;
+  font-size: 10px;
+  width: 154px;
+  height: 18px;
+  font-weight: normal;
+  color: #000000;
+}
+
+/* Center Div Tag */
+div.divcenter
+{
+  text-align: center;
+}
+
+div.divright
+{
+  text-align: right;
+}
+
+/* Bread Crumb Style */
+.Breadcrumb, A.Breadcrumb, A.Breadcrumb:hover
+{
+  font-family: Verdana;
+  font-size: 9px;
+  font-weight: normal;
+}
+.Breadcrumb
+{
+  color: #000000;
+  text-decoration: none;
+}
+A.Breadcrumb
+{
+  color: #000099;
+  text-decoration: none;
+}
+A.Breadcrumb:hover
+{
+  text-decoration: underline;
+}
+
+/* These styles emulate the dark page background and white table background used by USDA */
+.cUSDABackground
+{
+  background-color: #3e3e3e;
+  /*color: White;*/
+  margin: 0;
+  padding: 0;
+}
+
+.cLightBody
+{
+  background-color: White;
+  color: Black;
+}
+
+/*THESE STYLE TAGS REPRODUCE THE USDA BANNER MENU ITEMS*/
+td#USDABannerButtons, td#USDABannerTitle, #USDABannerButtons, #USDABannerTitle
+{
+  margin-left: 0px;
+  height: 19px;
+  vertical-align: bottom;
+  border: 1px solid Black;
+  background-color: #999999;
+  background-image: url(../images/top_nav_fill.gif);
+}
+td#USDABannerButtons, #USDABannerButtons
+{
+  text-align: right;
+  border-left: 1px none Black;
+}
+td#USDABannerButtons a, .cSelectedUSDABannerButton, td#USDABannerButtons a:visited, td#USDABannerButtons a:hover,
+#USDABannerButtons a, #USDABannerButtons a:visited, USDABannerButtons a:hover
+{
+  height: 100%;
+  font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  text-decoration: none;
+  text-align: center;
+  padding-left: 1ex;
+  padding-right: 1ex;
+}
+td#USDABannerTitle, #USDABannerTitle
+{
+  border-right: 1px none Black;
+  text-align: left;
+  vertical-align: baseline;
+  font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: Bold;
+  color: Yellow; /*#FFE401; #FFCC66;*/
+  padding-left: 1ex;
+}
+td#USDABannerButtons a:link, td#USDABannerButtons a:visited, #USDABannerButtons a:link, #USDABannerButtons a:visited
+{
+  color: #FFFFFF;
+  background-color: #999999; /*border-right: 1px dashed White;*/
+  background-image: url(../images/top_nav_fill.gif);
+}
+td#USDABannerButtons a:hover, #USDABannerButtons a:hover
+{
+  font-weight: normal;
+  color: #000000;
+  background-color: #CCCCCC;
+  border-left: 1px solid Black;
+  background-image: url(../images/top_nav_selected.gif);
+}
+#USDABannerButtons, #USDABannerTitle {
+  border: 0;
+}
+.cSelectedUSDABannerButton
+{
+  font-weight: normal;
+  color: #000000;
+  background-color: #CCCCCC;
+  border-left: 1px solid Black; /*border-right: 1px dashed White;*/
+  background-image: url(../images/top_nav_selected.gif);
+}
+.cUSDAButtonSpacer
+{
+  background-image: url(../images/top_nav_spacer.gif);
+  width: 1px;
+}
+td#USDABannerButtons a.cUSDARightMenu, #USDABannerButtons a.cUSDARightMenu
+{
+  border-right: 1px none #999999;
+}
+
+/*These Style tags reproduce the Section bars*/
+.cFAQBanner, .cContactUsBanner, .cAboutBanner, .cHelpBanner, .cConPBanner, .cSearchBanner, .cReportsBanner, .cErrorBanner
+{
+  font-family: Helvetica, Arial, Geneva, sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+  vertical-align: baseline;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  color: #F0F0F0; /*White*/
+}
+.cAboutBanner {  background-color: #35106E;}
+.cConPBanner, .cReportsBanner, .cReportsHeadlineBar {  background-color: #7F1C1C;}
+.cErrorBanner {  background-color: #FFFF33;}
+.cFAQBanner   {  background-color: #006400;}
+.cHelpBanner  {  background-color: #BD6500;}
+.cSearchBanner{  background-color: #228B22;}
+.cContactUsBanner {  background-color: #B32F01;}
+.cUSDARightNav, A.cUSDARightNav, A.cUSDARightNav:visited, A.cUSDARightNav:hover
+{
+  font-family: Verdana;
+  font-size: 10px;
+  font-weight: bold;
+  background-color: #F2F2F2; /*#E7ECF2;*/
+  color: #000099;
+}
+A.cUSDARightNav, A.cUSDARightNav:visited {
+	text-decoration: none;
+	width: 100%;
+}
+A.cUSDARightNav:hover {
+	text-decoration: underline;
+	width: 100%;
+}
+.cUSDALeftNav, A.cUSDALeftNav, A.cUSDALeftNav:visited, A.cUSDALeftNav:hover
+{
+	font-family: Verdana;
+	font-size: 10px;
+	font-weight: normal;
+	background-color: #C5C5C5;
+	color: #000099;
+}
+A.cUSDALeftNav, A.cUSDALeftNav:visited {
+	text-decoration: none;
+	width: 100%;
+}
+A.cUSDALeftNav:hover {
+	text-decoration: underline;
+	width: 100%;
+}
+
+.cHeadlineBar
+{
+  font-size: 15px;
+  font-family: Helvetica, Arial, Geneva, sans-serif;
+  font-weight: bold;
+  color: #3F3E3E;
+}
+
+/*END TAGS FROM USDA.css*/
+
+/*START TAGS FROM IEStyles.css*/
+A.cMenuButton {
+	border: 2px solid #666666;
+	border-bottom-color: #666666;
+	border-bottom-style: none;
+	border-bottom-width: thin;
+	padding-bottom: 1ex;
+	text-align: center;
+	vertical-align: middle;
+}
+A.cMenuButton:hover {
+	background-color: #666666;
+	color: #BEBEBE;
+	text-decoration: none;
+}
+#tblMenuBar {
+	border-bottom: 2px ridge #D4D4D4;
+	padding-top: 2px;
+}
+.cSideMenuDisabled {
+	padding-bottom: 1ex;
+	text-align: center;
+	text-decoration: none;
+	vertical-align: middle;
+}
+A.cSideMenu, .cSideMenuHeader, .cSideMenuSubHeader, .cSideMenuDisabled {
+	border: thin solid #ECECEC;
+	padding: 1ex;
+	padding-bottom: 0px;
+	text-align: left;
+	vertical-align: middle;
+	width: 100%;
+}
+A.cSideMenu:hover {
+	background-color: #D3D3D3;
+	border: thin solid #9C9C9C;
+	color: #000000;
+	/*font-size: xx-small;*/
+	padding: 1ex;
+	padding-bottom: 0px;
+	text-align: left;
+	text-decoration: none;
+	vertical-align: middle;
+	width: 100%;
+}
+.c1PadxT, .cSidePointer { padding-top: 1em; }
+.cSideMenuHeader, .cSideMenuSubHeader { background-color: #FFFFFF; border: thin solid #FFFFFF; color: #000000; }
+.cSideMenuSubHeader { color: #666666;}
+#tblSideMenu{
+	border-right-color: #666666; /* #006633;*/
+	border-right-style: solid;
+	border-right-width: 1px;
+	/*border-top-color: #006633;
+	border-top-style: solid;
+	border-top-width: 1px;*/
+	vertical-align: top;
+}
+/*END TAGS FROM IEStyles.css*/
+.cNewsHeader {
+	font-family: "Book Antiqua", "Times New Roman", "MS Serif";
+	font-size: 210%;
+	font-style: normal;
+	font-weight: bold;
+	color: #00008B;
+  margin-bottom: .3em; 
+}
+.cNewsTable 
+{
+	background-image: url(../images/nrcsnews3.gif);
+	/*background-repeat: repeat-y;*/
+	display:block;
+}
+.cFloatRight 
+{
+  float:right;
+  vertical-align:top;
+}
+/*select
+{
+	font-size: 8pt;
+	height: 22px;
+}*/
+
+.MenuBar
+{
+	font-family: arial;
+	font-size: 10pt;
+	background-color: #ffef73;
+	padding-top: 0px;
+	padding-bottom: 0px;                                              
+	padding-left: 5px;
+}
+
+.Menu
+{
+	cursor: pointer;
+	color: black;
+	position: relative;
+	font-family: verdana;
+	font-size: 9pt;
+	font-weight: bold;
+	height: 16px;
+	font-family: verdana;
+	padding-right: 10px;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	padding-left: 10px;
+	letter-spacing: 0px;
+}
+
+.MenuHighlighted
+{
+	cursor: pointer;
+	color: black;
+	position: relative;
+	font-size: 9pt;
+	font-weight: bold;
+	height: 16px;
+	font-family: verdana;
+	padding-right: 9px;
+	padding-top: 1px;
+	padding-bottom: 1px;
+	padding-left: 9px;
+	letter-spacing: 0px;
+	background-color: #efdf63;
+	border: 1px inset buttonface;
+}
+
+.MenuDisabled
+{
+	cursor: pointer;
+	color: 	#2F4F4F;
+	position: relative;
+	font-family: verdana;
+	font-size: 9pt;
+	font-weight: bold;
+	height: 16px;
+	font-family: verdana;
+	padding-right: 10px;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	padding-left: 10px;
+	letter-spacing: 0px;
+}
+
+.DropDown
+{
+	border: 1px solid black;
+	font-family: verdana;
+	cursor: pointer;
+	position: absolute;
+	visibility: hidden;
+	font-size: 11pt;
+	padding-bottom: 1px;
+	padding-right: 1px;
+	padding-top: 1px;
+	padding-left: 1px;
+	background-color: #C0C0C0;
+	z-index: 9999;
+}
+
+.MenuItem
+{
+	cursor: pointer;
+	color: black;
+	position: relative;
+	text-align: left;
+	font-size: 8pt;
+	font-family: verdana;
+	padding-right: 12px;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	padding-left: 12px;
+	letter-spacing: 0px;
+}
+
+.MenuItemHighlighted
+{
+	border: 1px solid black;
+	cursor: pointer;
+	color: black;
+	position: relative;
+	text-align: left;
+	font-size: 8pt;
+	font-family: verdana;
+	padding-right: 11px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	padding-left: 11px;
+	letter-spacing: 0px;
+	background-color: #ffff83;
+}
+
+.MenuItemDisabled
+{
+	cursor: pointer;
+	color: #a0a0a0;
+	position: relative;
+	text-align: left;
+	font-size: 8pt;
+	font-family: verdana;
+	padding-right: 12px;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	padding-left: 12px;
+	letter-spacing: 0px;
+}
+
+.SectionMenuBar
+{
+	position: relative;
+	height: 5px;
+	background-color: #0155a9;
+	vertical-align: top;
+}
+.SectionForm
+{
+	padding-right: 10px;
+	padding-left: 10px;
+	font-size: 8pt;
+	padding-bottom: 10px;
+	padding-top: 10px;
+	letter-spacing: 0px;
+}
+.SectionMenuBarItem
+{
+	font-size: 8pt;
+	margin-left: 5px;
+	cursor: pointer;
+	color: #ffffff;
+	margin-right: 5px;
+	position: relative;
+	top: -1px;
+}
+.SectionMenuBarSeperator
+{
+	width: 1px;
+	color: #ffffff;
+	position: relative;
+	top: -1px;
+	background-color: #ffffff;
+}
+.Expander
+{
+	cursor: pointer;
+}
+.FieldLabel
+{
+	font-weight: bold;
+	text-align: right;
+	font-family: tahoma;
+	font-size: 8pt;
+	margin-right: 1em;
+}
+.FormButton
+{
+	font-weight: bold;
+	font-size: 8pt;
+	color: #ffffff;
+	background-color: #009900;
+}
+.PanelCollapser
+{
+	padding-top: 2px;
+	padding-bottom: 2px;
+	padding-left: 4px;
+	color: #ffffff;
+	background-color: #0155a9;
+	font-family: tahoma;
+	font-size: 8pt;
+}
+.PanelMenuItemSeperator
+{
+	width: 1px;
+	color: #ffffff;
+	position: relative;
+	background-color: #ffffff;
+	margin-right: 4px;
+}
+.PanelMenuItem, a.PanelMenuItem:hover, a.PanelMenuItem:visited 
+{
+  margin-left:5px;
+  margin-right:5px;
+  cursor:pointer;
+  text-decoration:none;
+  color:White;
+  background-color:Transparent;
+}
+.cSelectedTableRow
+{
+	vertical-align: top;
+	background-color: #FFFFFF;
+	color: #000000;
+	vertical-align: Top;
+	font-size: xx-small;
+}
+.cDataGrid
+{
+	 border: 1px solid #D4D0C8;
+	 background-color: White;
+	 font-size: 11px;
+	 font-family: Arial;
+	 color: Black;
+	 width: 100%;
+	
+}
+.cPageTitle
+{
+	color: #6A5ACD;
+	font-size: 1.8em;
+	font-style: italic;
+	font-weight: bold;
+	margin-top: .3em;
+	display: block;
+}
+
+.cPageTitleBlack
+{
+	color:Black;
+	font-style: italic;
+	font-weight: bold;
+	margin-top: .3em;
+	display: block;
+}
+.cDGHeader, .cDGHeader A
+{
+	  font-weight: bold; 
+	  font-size: 8pt; 
+	  font-family: tahoma;
+	  vertical-align:bottom; 
+}
+.cDGHeader A, .cDGHeader A:visited 
+{
+  color:Black;
+}
+.cDGHeader A:hover 
+{
+  color:Blue;
+}
+/* Pagelette Styles (Windowshade, etc.)*/
+      BODY
+      {
+        padding: 0;
+        margin: 0;
+        color: #000;
+        font-family: verdana,arial,helvetica,sans-serif;
+        background-color: #FFFFFF;
+        font-size: 11px;
+      }
+      TABLE 
+      {
+		font-size:1em;
+	  }
+      .cPageLetShell
+      {
+	      position: relative;
+	      left: 0;
+	      top: 0;
+	      display: block;
+	      width: auto;
+	      margin-left: .3em;
+	      margin-right: .3em;
+	      margin-bottom: 1.4em;
+	      border: 1px none  #A8BBFF;
+	      color: Black;
+	      background-color: AppWorkspace; /* #f7f7f7;*/
+      }
+      .cPageLetTitleBrown, .cPageLetTitleBlue, .cPageLetTitleGray, .cPageLetTitleGreen, .cPageLetTitleDkBrown, .cPageLetTitleDkBlue
+      {
+	      position: relative;
+	      background-position: top left; 
+	      font-size: 1.2em;
+	      font-weight: bold;		
+	      text-align: left;
+	      vertical-align: top;
+	      height: 1.4em;
+	      width: 100%;
+	   }
+	   .cPageLetTitleBrown {
+	      background-color: #996633;
+	      color: White;
+      }
+	   .cPageLetTitleBlue {
+	      background-color: Blue;
+	      color: White;
+      }
+      .cPageLetTitleGray
+      {
+		background-color:#808080;
+		color: White;
+      }
+      .cPageLetTitleGreen
+      {
+		background-color:#339966;
+		color: White;
+      }
+      .cPageLetTitleDkBrown
+      {
+		background-color:#663300;
+		color: White;
+      }
+      .cPageLetTitleDkBlue 
+      {
+		background-color:#0155A9;
+		color:White;
+      }
+      
+      .cPageLetBody, .cPageLetBorderBody
+      {
+	      position: relative;
+	      width: auto;
+	      padding-left: 2%;
+	      padding-right: 2%;
+	      padding-top: 1%;
+	      padding-bottom: 0%;
+	      vertical-align: top;
+      }
+      .cPageLetItem
+      {
+	      width: 100%;
+	      display: block;
+	      margin-bottom: 1ex;
+	      vertical-align: middle;
+	      font-weight:normal;
+	      padding-left: .5ex;
+	      padding-right: .5ex;
+	      text-align: left;
+      }
+      .cSHimage, .cTitleButton {
+	      cursor: pointer;
+	      border: 0px;
+      }
+     .cTitleButton 
+     {
+		  float:right; 
+		  margin-right:1em; 
+     }
+	 .cProgramLandUses1
+	 {
+		width:12em;
+		padding-right:1em;
+	 }
+	 .cProgramLandUses2
+	 {
+		width:18em;
+		padding-right:1em;
+	 }
+	 .rcCheckbox
+	 {
+		float:left;
+		margin-bottom:2em;
+	 }
+	 .cApplicationLabelR
+	 {
+		font-size:11px;
+		text-align:right;
+		font-weight:bold;
+		width:8em;
+	margin-left:0em;
+	padding-right:1em;
+
+	 }
+	  .cApplicationLabel
+	 {
+		font-size:11px;
+		width:8em;
+
+	 }
+	 .cApplicationLabel2
+	 {
+		font-size:11px;
+		width:8.5em;
+
+	 }
+	 .cApplicants3
+	 {
+		font-size:11px;
+		width:11em;
+
+	 }
+	 .cDataLabel
+	 {
+		font-size:11px;
+		text-align:left;
+	 }
+	 .cLandUseLabelYellow, .cLandUseLabelBlue
+	 {
+		font-weight:bold;
+		color:Black;
+	 }
+	 .cLandUseLabelYellow
+	 {
+		background-color:Yellow;
+	 }
+	 .cLandUseLabelBlue
+	 {
+		background-color:#0155a9;
+		color:White;
+	 }
+	 .cIssuesBlue 
+	 {
+		background-color:#99CCFE;
+		color:Black;
+	 }
+	 .cScoringTblHeader
+	 {
+		background-color: #C0F4C7;
+		color: Black;
+		text-align:center;
+		border-left: solid 1px black;
+		border-top: solid 1px black;
+		border-right: solid 1px black;
+		border-bottom: solid 1px black;
+	 }
+	 
+
+	 .cScoreTitleBlack
+{
+	color:Black;
+	font-size: 1em;
+	font-weight: bold;
+	margin-top: .3em;
+	display: block;
+	text-align: right;
+	padding-right:1em;
+	
+}
+	.cScoreValue
+	{
+		background-color:White;
+		border-left: solid 1px black;
+		border-top: solid 1px black;
+		border-right: solid 1px black;
+		border-bottom: solid 1px black;
+		height:1.8em;
+
+	}
+	.cPointsValue
+	{
+		text-align:right;
+		background-color:#FFFF99;
+		width:6em;
+		border:1px solid black;
+		padding-top:.2em;
+		padding-bottom:.2em;
+		padding-right:.2em;
+		margin-left:.5em;
+	}
+	.cDGHeaderStyle
+{
+		color:Black;
+	font-size: 1em;
+	font-weight: bold;
+	margin-top: .3em;
+	display: block;
+}
+.cDataLabel,  .cDataLabelC, .cDataLabelR, .cDataLabelW, .cDataHeaderC, .cDataHeaderR, .cDataHeaderL { font-weight: bold; }
+.cDataEntry,  .cDataEntryR, .cDataEntryC, .cDataEntryW, .cDataSource { 
+	FONT-FAMILY: Arial; 
+	Font-size: 1.2em;  /* 10px;*/
+	font-weight : normal;
+	color : black;
+
+}
+.cDataEntry
+{
+	Font-size:1em;
+}
+.cDataEntryW, .cDataLabelW  { width: 100%;  }
+
+.cDataEntryL, .cDataLabelL, .cDataHeaderL, .cDataSource  { text-align: left; }
+.cDataEntryC, .cDataLabelC, .cDataHeaderC { text-align: center; }
+.cDataEntryR, .cDataLabelR, .cDataHeaderR, .cApprovedLgR { text-align: right; }
+
+.cLocalIssues
+{
+	background-color: #6982EE;
+	color: White;
+	font-size:1.2em;
+	font-weight:bold;
+}
+.cStateIssues
+{
+	background-color: #7B9EBD;
+	color: White;
+	font-size:1.2em;
+	font-weight:bold;
+}
+.cNationalPriorities
+{
+	background-color: #1C5180;
+	color: White;
+	font-size:1.2em;
+	font-weight:bold;
+}
+.cEfficiency
+{
+	background-color: #333399;
+	color: White;
+	font-size:1.2em;
+	font-weight:bold;
+}
+.cTableRowB
+{
+	background-color: #ADD8E6;
+}
+.highlight
+{
+	color: highlighttext;
+	background-color: highlight;
+}
+table#tblHeader img
+{
+	border-width: 0;
+}
+td.topnavleft
+{
+	background-image:url(top_nav_left_bg.gif);
+	background-repeat:repeat-x;
+}

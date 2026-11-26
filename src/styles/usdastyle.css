@@ -1,0 +1,285 @@
+/* USDA-NRCS Official Soil Series Description (OSD) stylesheet
+ * Palette and base rules derived from legacy usdastyle.css and supplemental.css
+ */
+
+:root {
+  --usda-chrome-bg: #3e3e3e;
+  --usda-surface-bg: #ffffff;
+  --usda-text: #000000;
+  --usda-table-header-bg: #248621;
+  --usda-table-border: #228623;
+  --usda-table-header-text: #ffffff;
+  --usda-link: #000099;
+  --usda-link-visited: #660099;
+  --usda-footer-border: #B8B8B8;
+  --usda-nav-left-bg: #C5C5C5;
+  --usda-nav-right-bg: #F2F2F2;
+
+  --usda-font-chrome: Verdana, Geneva, sans-serif;
+  --usda-font-chrome-size: 11px;
+  --usda-font-narrative: Georgia, "Times New Roman", Times, serif;
+  --usda-container-width: 767px;
+}
+
+/* Base page chrome and centered 767px body container */
+body,
+.cUSDABackground {
+  background-color: var(--usda-chrome-bg);
+  color: var(--usda-text);
+  margin: 0;
+  padding: 0;
+  font-family: var(--usda-font-chrome);
+  font-size: var(--usda-font-chrome-size);
+}
+
+.osd-page,
+.cLightBody {
+  background-color: var(--usda-surface-bg);
+  color: var(--usda-text);
+  max-width: var(--usda-container-width);
+  margin: 0 auto;
+  padding: 12px 16px;
+  box-sizing: border-box;
+}
+
+/* Chrome and list typography */
+p,
+li,
+ul,
+.osd-chrome {
+  font-family: var(--usda-font-chrome);
+  font-size: var(--usda-font-chrome-size);
+  color: var(--usda-text);
+}
+
+p {
+  margin-top: 3px;
+  margin-bottom: 7px;
+}
+
+ul {
+  margin-top: 5px;
+  margin-bottom: 0;
+}
+
+li {
+  list-style-type: disc;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--usda-text);
+  height: 1px;
+  margin: 12px 0;
+}
+
+/* Links */
+a:link {
+  font-weight: normal;
+  color: var(--usda-link);
+  text-decoration: none;
+}
+
+a:visited {
+  font-weight: normal;
+  color: var(--usda-link-visited);
+  text-decoration: none;
+}
+
+a:hover {
+  font-weight: normal;
+  color: var(--usda-link);
+  text-decoration: underline;
+}
+
+a img {
+  border: 0;
+}
+
+/* Legacy and semantic tables */
+table.tableborder,
+table.osd-table {
+  width: 100%;
+  border: 1px solid var(--usda-table-border);
+  border-collapse: separate;
+  border-spacing: 0;
+  font-family: var(--usda-font-chrome);
+  font-size: var(--usda-font-chrome-size);
+  font-weight: normal;
+  text-decoration: none;
+}
+
+th.THBorder,
+table.osd-table th {
+  font-family: var(--usda-font-chrome);
+  font-size: var(--usda-font-chrome-size);
+  font-weight: bold;
+  background-color: var(--usda-table-header-bg);
+  border-bottom: 1px solid var(--usda-table-border);
+  color: var(--usda-table-header-text);
+  text-align: left;
+  padding: 4px 6px;
+}
+
+td.TDBorder,
+table.osd-table td {
+  font-family: var(--usda-font-chrome);
+  font-size: var(--usda-font-chrome-size);
+  border-bottom: 1px solid var(--usda-table-border);
+  font-weight: normal;
+  padding: 4px 6px;
+}
+
+/* Series page header, metadata, and downloads */
+.osd-chrome {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0 8px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid var(--usda-footer-border);
+}
+
+.osd-header {
+  margin-bottom: 12px;
+}
+
+.osd-meta {
+  font-family: var(--usda-font-narrative);
+  font-size: 14px;
+  line-height: 1.45;
+  margin-bottom: 10px;
+}
+
+.osd-location {
+  white-space: pre-wrap;
+}
+
+.osd-downloads {
+  font-family: var(--usda-font-chrome);
+  font-size: var(--usda-font-chrome-size);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+/* OSD narrative body */
+.osd-narrative {
+  font-family: var(--usda-font-narrative);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--usda-text);
+}
+
+.osd-narrative p {
+  font-family: var(--usda-font-narrative);
+  font-size: 15px;
+  line-height: 1.5;
+  margin: 0 0 12px;
+}
+
+.osd-title,
+.osd-narrative h1 {
+  font-family: var(--usda-font-narrative);
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--usda-text);
+  margin: 12px 0;
+}
+
+.osd-section {
+  margin-bottom: 14px;
+}
+
+.osd-section-label {
+  font-weight: bold;
+}
+
+.osd-horizon {
+  margin: 10px 0;
+}
+
+.osd-horizon-name {
+  font-weight: bold;
+  white-space: pre;
+}
+
+/* Two-column Typical Pedon + Profile Sketch container */
+.osd-pedon-layout {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.osd-pedon-text {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.osd-pedon-sketch {
+  flex: 0 0 auto;
+  width: 140px;
+  text-align: center;
+}
+
+.osd-pedon-sketch svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Footer */
+.footertable,
+.osd-footer {
+  border-top: 1px solid var(--usda-footer-border);
+  margin-top: 16px;
+  padding-top: 8px;
+  font-family: var(--usda-font-chrome);
+  font-size: var(--usda-font-chrome-size);
+  color: var(--usda-text);
+}
+
+/* Responsive collapse below 767px */
+@media (max-width: 767px) {
+  .osd-page,
+  .cLightBody {
+    max-width: 100%;
+    padding: 10px 12px;
+  }
+
+  .osd-pedon-layout {
+    flex-direction: column;
+  }
+
+  .osd-pedon-sketch {
+    width: 100%;
+  }
+}
+
+/* Print styles: white background, no screen chrome */
+@media print {
+  body,
+  .cUSDABackground,
+  .osd-page,
+  .cLightBody {
+    background-color: #ffffff;
+    color: #000000;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .osd-chrome,
+  .osd-downloads,
+  .no-print {
+    display: none;
+  }
+
+  .osd-pedon-layout {
+    break-inside: avoid;
+  }
+}

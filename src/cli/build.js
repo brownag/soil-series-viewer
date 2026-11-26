@@ -15,7 +15,18 @@ import {
   loadCorpus,
 } from "../loader/index.js";
 import { keyToRelativePath } from "../loader/keys.js";
+import { renderProfileSketch } from "../render/profile-sketch.js";
 import { renderSeriesPage } from "../render/series-page.js";
+
+/**
+ * Default sketch renderer hook for `buildSite`.
+ *
+ * @param {object} record
+ * @returns {string|null}
+ */
+function defaultRenderSketch(record) {
+  return renderProfileSketch(record).svg;
+}
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export const DEFAULT_CSS_PATH = path.resolve(__dirname, "../styles/usdastyle.css");
@@ -141,7 +152,7 @@ export async function buildSite(options = {}) {
     skbDir = DEFAULT_SKB_DIR,
     osdTxtDir = DEFAULT_OSD_TXT_DIR,
     cssPath = DEFAULT_CSS_PATH,
-    renderSketch = null,
+    renderSketch = defaultRenderSketch,
   } = options;
 
   const { records, report } = await loadCorpus({
@@ -191,8 +202,12 @@ export async function buildSite(options = {}) {
           jsonCopied++;
         }
 
-        const sketchSvg =
+        const rawSketch =
           typeof renderSketch === "function" ? renderSketch(record) : null;
+        const sketchSvg =
+          rawSketch && typeof rawSketch === "object" && "svg" in rawSketch
+            ? rawSketch.svg
+            : rawSketch;
 
         const html = renderSeriesPage(record, {
           cssHref: "../../usdastyle.css",

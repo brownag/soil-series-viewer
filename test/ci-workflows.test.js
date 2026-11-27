@@ -15,9 +15,10 @@ test("test.yml workflow exists and configures Node 24, upstream clones, env vars
   assert.match(content, /push:/);
   assert.match(content, /pull_request:/);
   assert.match(content, /node-version:\s*"24"/);
-  assert.match(content, /OSD_SC_PATH:/);
-  assert.match(content, /OSD_SKB_DIR:/);
-  assert.match(content, /SOIL_PROFILES_PATH:/);
+  assert.match(content, /OSD_SC_PATH=/);
+  assert.match(content, /OSD_SKB_DIR=/);
+  assert.match(content, /SOIL_PROFILES_PATH=/);
+  assert.doesNotMatch(content, /\$\{\{\s*runner\.temp\s*\}\}/);
   assert.match(content, /git clone --depth 1 https:\/\/github\.com\/ncss-tech\/OSDRegistry\.git/);
   assert.match(content, /git clone --depth 1 https:\/\/github\.com\/ncss-tech\/SoilKnowledgeBase\.git/);
   assert.match(content, /git clone --depth 1 https:\/\/github\.com\/brownag\/SoilProfiles\.js\.git/);

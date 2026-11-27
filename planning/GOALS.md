@@ -18,32 +18,17 @@ Source State: `planning/STATE_4.md` (Orchestrations 1–4 complete; `npm test` 1
 - **[G9]** Taxonomy tree explorer (`taxonomy/index.html`, `src/client/taxonomy-app.js`, `data/taxonomy-tree.json`) — completed in Orchestration 4 (`a123d79`, `1f23166`, `0570320`)
 - **[G10]** KST 2022 taxon criteria & chapter/page tooltips (`src/index/kst-criteria.js`, `data/kst-criteria.json`) — completed in Orchestration 4 (`a123d79`, `1f23166`, `0570320`)
 - **[G11]** Searchable Glossary & Diagnostic Features (`glossary/index.html`, `src/index/glossary.js`, `data/glossary.json`) — completed in Orchestration 4 (`a123d79`, `1f23166`, `0570320`)
-
-## Circled Goal (Active — Orchestration 5: Full-Text Search, Interactive Profiles & Offline PWA)
-
-- **[G8]** Full-text search indexes OSD section content client-side via Pagefind, with a search UI accessible from the home page returning matching series snippets and links.
-  - Why now: Strictly orthogonal leaf goal (depends only on completed `G2`); adds full-text OSD body search alongside existing `G7` name/SC-facet search.
-  - Exit criteria: `data-pagefind-*` markup on series pages, optional `--pagefind` CLI runner with graceful fallback, client full-text search panel, unit + E2E tests green.
-  - First action: Check local `pagefind` availability and design `data-pagefind-*` attributes + client integration in `EXECUTION_PLAN_5.md`.
-
-- **[G19]** Interactive horizon tooltips and profile comparison wire interactive event listeners on series-page profile sketches and enable side-by-side profile comparison.
-  - Why now: Strictly orthogonal leaf goal (depends only on completed `G4`); upgrades static build-time profile sketches into interactive exploration tools.
-  - Exit criteria: Horizon `data-*` attributes on profile SVG, zero-dependency `src/client/profile-interactive.js` (tooltips + comparison drawer/panel), CSS styling, unit + E2E tests green.
-  - First action: Inspect `src/render/profile-sketch.js` SVG output and design tooltip/comparison UX in `EXECUTION_PLAN_5.md`.
-
-- **[G20]** Offline/PWA support caches static assets and JSON indexes using DST's service-worker and web-manifest pattern.
-  - Why now: Strictly orthogonal leaf goal (depends only on completed `G2`); makes the static site installable and usable offline in the field.
-  - Exit criteria: `src/pwa/generate-pwa.js` emitting `manifest.json` + `sw.js` with cache versioning, `<link rel="manifest">` + SW registration on all pages, unit + E2E tests green.
-  - First action: Inspect `/home/andrew/workspace/DST/sw.js` and `manifest.json` to mirror DST's caching strategy.
+- **[G8]** Full-text search via Pagefind (`src/index/pagefind.js`, `src/client/fulltext-search.js`, `--pagefind` CLI) — completed in Orchestration 5 (`0fd3bc0`, `0438e3a`, `fdca2e5`)
+- **[G19]** Interactive horizon tooltips & profile comparison (`src/render/profile-interactive-data.js`, `src/client/profile-interactive.js`) — completed in Orchestration 5 (`0fd3bc0`, `0438e3a`, `fdca2e5`)
+- **[G20]** Offline/PWA support (`src/pwa/generate-pwa.js`, `manifest.json`, `sw.js`) — completed in Orchestration 5 (`0fd3bc0`, `0438e3a`, `fdca2e5`)
+- **[G14]** Incremental build (`--incremental`, `src/cli/incremental-cache.js`), configurable upstream paths (`src/lib/soil-profiles.js`), and GitHub Actions CI + weekly GitHub Pages deploy (`.github/workflows/{test,build-and-deploy}.yml`) — completed (`58b1b3d`, `deceece`)
 
 ## Sequenced Goals (Dependency DAG)
 
-### Hosting & CI
+### Hosting & URL Rewriting
 
 - **[G15]** Hosting and URL scheme serves canonical slugs with URL rewriting for `OSD_Docs/<L>/<NAME>.html` compatibility and redirects for punctuation/casing edge cases.
   - Depends on: G2 (complete)
-- **[G14]** Incremental build and CI hashes per-series inputs, rebuilds only changed pages on a weekly schedule after SKB's Monday 06:00 UTC refresh, and deploys.
-  - Depends on: G2, G15
 
 ## Independent Backlog
 

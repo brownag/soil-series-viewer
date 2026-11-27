@@ -68,6 +68,19 @@ test('defines series layout classes, responsive 767px collapse, and print rules'
     '.osd-pedon-sketch',
     '.osd-table',
     '.osd-footer',
+    '.osd-series-link',
+    '.osd-competing-panel',
+    '.osd-competing-heading',
+    '.osd-competing-family',
+    '.osd-competing-grid',
+    '.osd-competing-card',
+    '.osd-competing-strip',
+    '.osd-competing-name',
+    '.osd-competing-more',
+    '.osd-qa-notes',
+    '.osd-qa-item',
+    '.osd-qa-warn',
+    '.osd-qa-info',
   ];
   for (const cls of requiredClasses) {
     assert.ok(css.includes(cls), `expected layout class ${cls}`);
@@ -79,6 +92,6 @@ test('defines series layout classes, responsive 767px collapse, and print rules'
   );
   assert.match(
     css,
-    /@media\s+print\s*\{[\s\S]*?background-color:\s*#ffffff[\s\S]*?\.osd-chrome[\s\S]*?display:\s*none/
+    /@media\s+print\s*\{[\s\S]*?background-color:\s*#ffffff[\s\S]*?\.osd-chrome[\s\S]*?\.osd-qa-notes[\s\S]*?display:\s*none/
   );
 });

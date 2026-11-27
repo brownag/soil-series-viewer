@@ -15,6 +15,7 @@ import {
   formatLocationLine,
   renderSeriesPage,
 } from "../src/render/series-page.js";
+import { buildSeriesLinkIndex } from "../src/render/cross-links.js";
 import { parseCliArgs } from "../src/cli/build.js";
 
 const execFileAsync = promisify(execFile);
@@ -294,4 +295,111 @@ test("cli/build.js: parseCliArgs and --series AMADOR,MT._AIRY build output", asy
   } finally {
     await fsp.rm(tmpOut, { recursive: true, force: true });
   }
+});
+
+test("renderSeriesPage: renders home link, cross-links in COMPETING/ASSOCIATED only, competingPanelHtml placement, and qaNotesHtml", () => {
+  const linkIndex = buildSeriesLinkIndex([
+    { key: "AMADOR", name: "Amador", letter: "A" },
+    { key: "AUBURN", name: "Auburn", letter: "A" },
+    { key: "EXCHEQUER", name: "Exchequer", letter: "E" },
+    { key: "PARDER", name: "Parder", letter: "P" },
+  ]);
+
+  const baseRecord = {
+    key: "AMADOR",
+    name: "Amador",
+    letter: "A",
+    status: "Established",
+    hasSc: true,
+    hasSkb: true,
+    sc: { areasymbol: "CA" },
+    skb: {
+      SERIES: "AMADOR",
+      STATES: "CA",
+      "TAXONOMIC CLASS": {
+        section: "TAXONOMIC CLASS",
+        content: "Loamy Typic Haploxerepts",
+      },
+      "COMPETING SERIES": {
+        section: "COMPETING SERIES",
+        content: "These are the Auburn and Exchequer soils. Amador is self.",
+      },
+      "GEOGRAPHIC SETTING": {
+        section: "GEOGRAPHIC SETTING",
+        content: "Foothills near Auburn.",
+      },
+      "GEOGRAPHICALLY ASSOCIATED SOILS": {
+        section: "GEOGRAPHICALLY ASSOCIATED SOILS",
+        content: "These are the Parder soils.",
+      },
+      REMARKS: {
+        section: "REMARKS",
+        content: "Compare with Auburn and Exchequer in REMARKS.",
+      },
+    },
+    horizons: [],
+  };
+
+  const competingPanelHtml =
+    '  <section class="osd-section osd-competing-panel" id="same-family-series">Panel</section>';
+  const qaNotesHtml =
+    '<details class="osd-qa-notes no-print"><summary>Data quality notes (1)</summary></details>';
+
+  const html = renderSeriesPage(baseRecord, {
+    linkIndex,
+    competingPanelHtml,
+    qaNotesHtml,
+  });
+
+  // Home link in .osd-chrome
+  assert.match(
+    html,
+    /<nav class="osd-chrome no-print"[\s\S]*?<a class="osd-home-link" href="\.\.\/\.\.\/index\.html">&larr; All Series<\/a>[\s\S]*?<\/nav>/
+  );
+
+  // Cross-links in COMPETING SERIES and GEOGRAPHICALLY ASSOCIATED SOILS, not self, not REMARKS
+  const competingSec = html.match(/<section class="osd-section" id="competing-series">[\s\S]*?<\/section>/)[0];
+  assert.ok(competingSec.includes('<a class="osd-series-link" href="../A/AUBURN.html">Auburn</a>'));
+  assert.ok(competingSec.includes('<a class="osd-series-link" href="../E/EXCHEQUER.html">Exchequer</a>'));
+  assert.ok(!competingSec.includes('href="../A/AMADOR.html"'));
+
+  const assocSec = html.match(/<section class="osd-section" id="geographically-associated-soils">[\s\S]*?<\/section>/)[0];
+  assert.ok(assocSec.includes('<a class="osd-series-link" href="../P/PARDER.html">Parder</a>'));
+
+  const remarksSec = html.match(/<section class="osd-section" id="remarks">[\s\S]*?<\/section>/)[0];
+  assert.ok(!remarksSec.includes("osd-series-link"), "REMARKS must not receive series cross-links");
+
+  // competingPanelHtml inserted right after COMPETING SERIES and before GEOGRAPHIC SETTING
+  const competingIdx = html.indexOf('id="competing-series"');
+  const panelIdx = html.indexOf('id="same-family-series"');
+  const geoSettingIdx = html.indexOf('id="geographic-setting"');
+  assert.ok(competingIdx !== -1 && panelIdx !== -1 && geoSettingIdx !== -1);
+  assert.ok(competingIdx < panelIdx && panelIdx < geoSettingIdx);
+
+  // qaNotesHtml inserted inside <article class="osd-narrative"> after sections
+  const articleMatch = html.match(/<article class="osd-narrative">([\s\S]*?)<\/article>/);
+  assert.ok(articleMatch);
+  assert.ok(articleMatch[1].includes(qaNotesHtml));
+  assert.ok(articleMatch[1].indexOf('id="remarks"') < articleMatch[1].indexOf("osd-qa-notes"));
+
+  // When COMPETING SERIES is absent, competingPanelHtml is placed at end of sections
+  const noCompetingRecord = {
+    ...baseRecord,
+    skb: {
+      SERIES: "AMADOR",
+      STATES: "CA",
+      "TAXONOMIC CLASS": baseRecord.skb["TAXONOMIC CLASS"],
+      REMARKS: baseRecord.skb.REMARKS,
+    },
+  };
+  const htmlNoCompeting = renderSeriesPage(noCompetingRecord, {
+    competingPanelHtml,
+    qaNotesHtml,
+  });
+  const noCompArticle = htmlNoCompeting.match(/<article class="osd-narrative">([\s\S]*?)<\/article>/)[1];
+  const remarksPos = noCompArticle.indexOf('id="remarks"');
+  const panelPos = noCompArticle.indexOf('id="same-family-series"');
+  const qaPos = noCompArticle.indexOf("osd-qa-notes");
+  assert.ok(remarksPos !== -1 && panelPos !== -1 && qaPos !== -1);
+  assert.ok(remarksPos < panelPos && panelPos < qaPos);
 });

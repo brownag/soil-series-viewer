@@ -4,6 +4,13 @@
  * and an optional build-time profile sketch SVG slot.
  */
 
+import { linkSeriesNames } from "./cross-links.js";
+
+const CROSS_LINK_SECTIONS = new Set([
+  "COMPETING SERIES",
+  "GEOGRAPHICALLY ASSOCIATED SOILS",
+]);
+
 export const NSSH_SECTIONS = [
   "TAXONOMIC CLASS",
   "TYPICAL PEDON",
@@ -192,11 +199,16 @@ function renderTypicalPedonSection(label, content, horizons, sketchSvg) {
  * @param {string} sectionKey
  * @param {string} label
  * @param {string} content
+ * @param {object|null} [linkIndex=null]
+ * @param {string|null} [selfKey=null]
  * @returns {string}
  */
-function renderStandardSection(sectionKey, label, content) {
+function renderStandardSection(sectionKey, label, content, linkIndex = null, selfKey = null) {
   const id = toSectionId(sectionKey);
-  const body = formatMultilineHtml(content);
+  const body =
+    linkIndex && CROSS_LINK_SECTIONS.has(sectionKey)
+      ? linkSeriesNames(content, linkIndex, selfKey)
+      : formatMultilineHtml(content);
   const separator = content.includes("\n") ? "<br>\n    " : " ";
   return `  <section class="osd-section" id="${escapeHtml(id)}">\n    <strong class="osd-section-label">${escapeHtml(label)}:</strong>${separator}${body}\n  </section>`;
 }
@@ -210,6 +222,9 @@ function renderStandardSection(sectionKey, label, content) {
  * @param {string|null} [options.sketchSvg=null] Optional pre-rendered SVG markup
  * @param {boolean} [options.hasTxt=false] Whether `<KEY>.txt` download exists
  * @param {boolean} [options.hasJson] Whether `<KEY>.json` download exists (defaults to `record.hasSkb`)
+ * @param {object|null} [options.linkIndex=null] Optional precompiled cross-link index
+ * @param {string|null} [options.competingPanelHtml=null] Optional pre-rendered competing-series panel HTML
+ * @param {string|null} [options.qaNotesHtml=null] Optional pre-rendered QA notes `<details>` HTML
  * @returns {string} Complete HTML document
  */
 export function renderSeriesPage(record, options = {}) {
@@ -222,6 +237,9 @@ export function renderSeriesPage(record, options = {}) {
     sketchSvg = null,
     hasTxt = false,
     hasJson = Boolean(record.hasSkb || record.skbPath),
+    linkIndex = null,
+    competingPanelHtml = null,
+    qaNotesHtml = null,
   } = options;
 
   const skb = record.skb && typeof record.skb === "object" ? record.skb : null;
@@ -279,6 +297,10 @@ export function renderSeriesPage(record, options = {}) {
     metaLines.push(`      <div>${escapeHtml(revdate)}</div>`);
   }
 
+  const hasCompetingPanel =
+    typeof competingPanelHtml === "string" && competingPanelHtml.trim().length > 0;
+  let insertedCompetingPanel = false;
+
   const sectionHtmlBlocks = [];
   if (skb) {
     for (const sectionKey of NSSH_SECTIONS) {
@@ -298,7 +320,13 @@ export function renderSeriesPage(record, options = {}) {
           sectionHtmlBlocks.push(block);
         }
       } else if (content && content.trim().length > 0) {
-        sectionHtmlBlocks.push(renderStandardSection(sectionKey, label, content));
+        sectionHtmlBlocks.push(
+          renderStandardSection(sectionKey, label, content, linkIndex, key)
+        );
+        if (sectionKey === "COMPETING SERIES" && hasCompetingPanel) {
+          sectionHtmlBlocks.push(competingPanelHtml);
+          insertedCompetingPanel = true;
+        }
       }
     }
   } else {
@@ -317,12 +345,21 @@ export function renderSeriesPage(record, options = {}) {
     );
   }
 
+  if (hasCompetingPanel && !insertedCompetingPanel) {
+    sectionHtmlBlocks.push(competingPanelHtml);
+  }
+
   const overviewHtml = overview
     ? `\n    <p>${formatMultilineHtml(overview)}</p>`
     : "";
 
   const sectionsHtml =
     sectionHtmlBlocks.length > 0 ? `\n${sectionHtmlBlocks.join("\n")}` : "";
+
+  const qaHtml =
+    typeof qaNotesHtml === "string" && qaNotesHtml.trim().length > 0
+      ? `\n${qaNotesHtml}`
+      : "";
 
   return [
     `<!doctype html>`,
@@ -336,6 +373,7 @@ export function renderSeriesPage(record, options = {}) {
     `<body class="cUSDABackground">`,
     `  <main class="osd-page cLightBody">`,
     `    <nav class="osd-chrome no-print" aria-label="Series links and downloads">`,
+    `      <a class="osd-home-link" href="../../index.html">&larr; All Series</a>`,
     `      <span>Official Soil Series Description &mdash; ${escapeHtml(displayName)}</span>${downloadsHtml}`,
     `    </nav>`,
     `    <header class="osd-header">`,
@@ -344,7 +382,7 @@ export function renderSeriesPage(record, options = {}) {
     `      </div>`,
     `    </header>`,
     `    <article class="osd-narrative">`,
-    `      <h1 class="osd-title">${escapeHtml(displayName)} SERIES</h1>${overviewHtml}${sectionsHtml}`,
+    `      <h1 class="osd-title">${escapeHtml(displayName)} SERIES</h1>${overviewHtml}${sectionsHtml}${qaHtml}`,
     `    </article>`,
     `    <footer class="osd-footer footertable">`,
     `      <div>National Cooperative Soil Survey</div>`,

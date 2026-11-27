@@ -142,6 +142,23 @@ table.osd-table td {
   border-bottom: 1px solid var(--usda-footer-border);
 }
 
+.osd-home-link {
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+a.osd-series-link:link,
+a.osd-series-link:visited {
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 2px;
+}
+
+a.osd-series-link:hover {
+  text-decoration: underline;
+  text-decoration-style: solid;
+}
+
 .osd-header {
   margin-bottom: 12px;
 }
@@ -232,6 +249,111 @@ table.osd-table td {
   margin: 0 auto;
 }
 
+/* Same-family competing series panel */
+.osd-competing-panel {
+  margin: 14px 0;
+  padding: 10px 12px;
+  background-color: var(--usda-nav-right-bg);
+  border: 1px solid var(--usda-footer-border);
+}
+
+.osd-competing-heading {
+  font-family: var(--usda-font-chrome);
+  font-size: 12px;
+  font-weight: bold;
+  color: var(--usda-text);
+  margin: 0 0 4px;
+}
+
+.osd-competing-panel .osd-competing-family {
+  font-family: var(--usda-font-chrome);
+  font-size: var(--usda-font-chrome-size);
+  color: var(--usda-text);
+  margin: 0 0 8px;
+}
+
+.osd-competing-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.osd-competing-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 76px;
+  padding: 6px 4px;
+  background-color: var(--usda-surface-bg);
+  border: 1px solid var(--usda-footer-border);
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.osd-competing-card:hover {
+  border-color: var(--usda-table-border);
+}
+
+.osd-competing-strip {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.osd-competing-strip svg {
+  display: block;
+}
+
+.osd-competing-name {
+  font-family: var(--usda-font-chrome);
+  font-size: var(--usda-font-chrome-size);
+  font-weight: bold;
+  line-height: 1.25;
+  word-break: break-word;
+}
+
+.osd-competing-panel .osd-competing-more {
+  font-family: var(--usda-font-chrome);
+  font-size: var(--usda-font-chrome-size);
+  color: var(--usda-text);
+  margin: 8px 0 0;
+}
+
+/* Collapsible data quality notes */
+.osd-qa-notes {
+  margin: 14px 0 4px;
+  padding: 8px 12px;
+  background-color: var(--usda-nav-right-bg);
+  border: 1px solid var(--usda-footer-border);
+  font-family: var(--usda-font-chrome);
+  font-size: var(--usda-font-chrome-size);
+}
+
+.osd-qa-notes summary {
+  cursor: pointer;
+  font-weight: bold;
+  color: var(--usda-text);
+}
+
+.osd-qa-notes ul {
+  margin: 6px 0 2px;
+  padding-left: 18px;
+}
+
+.osd-qa-item {
+  margin: 3px 0;
+  line-height: 1.4;
+}
+
+.osd-qa-warn {
+  color: #7a2e00;
+}
+
+.osd-qa-info {
+  color: var(--usda-text);
+}
+
 /* Footer */
 .footertable,
 .osd-footer {
@@ -275,6 +397,7 @@ table.osd-table td {
 
   .osd-chrome,
   .osd-downloads,
+  .osd-qa-notes,
   .no-print {
     display: none;
   }

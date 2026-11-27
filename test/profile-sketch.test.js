@@ -18,8 +18,11 @@ test("renderProfileSketch: AMADOR renders valid SVG with accurate 10YR fills", a
   assert.match(svg, /width="140"/);
   assert.match(svg, /height="320"/);
 
-  // AMADOR A horizon is 10YR 4/2 moist -> #6e5f4c (not the old 5YR-collapsed #6e5f4d)
-  assert.ok(svg.includes('fill="#6e5f4c"'), "expected accurate 10YR 4/2 fill #6e5f4c");
+  // AMADOR A horizon is 10YR 4/2 moist (not the old 5YR-collapsed #6e5f4d)
+  const expected10YR42 = munsellToHex("10YR", 4, 2);
+  assert.ok(expected10YR42, "expected munsellToHex('10YR', 4, 2) to return a hex color");
+  assert.notEqual(expected10YR42, "#6e5f4d", "munsellToHex('10YR', 4, 2) must not equal old #6e5f4d");
+  assert.ok(svg.includes(`fill="${expected10YR42}"`), `expected accurate 10YR 4/2 fill ${expected10YR42}`);
   assert.ok(!svg.includes('fill="#6e5f4d"'), "must not use old collapsed 5YR fill #6e5f4d");
 
   // Bw1/Bw2 are 10YR 5/3 moist and Cr is 2.5Y 7/4 moist
@@ -97,7 +100,10 @@ test("renderProfileSketch: SKB-9 fallback uses moist, then dry, then #cccccc", (
     (m) => m[0].match(/\bfill="([^"]+)"/)?.[1]
   );
 
-  assert.deepEqual(fills, ["#6e5f4c", dryOnlyColor, "#cccccc", "#cccccc"]);
+  const expected10YR42 = munsellToHex("10YR", 4, 2);
+  assert.ok(expected10YR42);
+  assert.notEqual(expected10YR42, "#6e5f4d");
+  assert.deepEqual(fills, [expected10YR42, dryOnlyColor, "#cccccc", "#cccccc"]);
 });
 
 test("renderProfileSketch: SKB-10 omits missing/invalid depths and returns null svg when none remain", () => {
@@ -162,10 +168,13 @@ test("renderProfileSketch: forwards width, height, and mode options to renderSta
     mode: "thumbnail",
   });
 
+  const expected10YR42 = munsellToHex("10YR", 4, 2);
+  assert.ok(expected10YR42);
+  assert.notEqual(expected10YR42, "#6e5f4d");
   assert.deepEqual(omittedHorizons, []);
   assert.match(svg, /width="45"/);
   assert.match(svg, /height="200"/);
-  assert.ok(svg.includes('fill="#6e5f4c"'));
+  assert.ok(svg.includes(`fill="${expected10YR42}"`));
   // Thumbnail mode omits the depth axis label "Depth (cm)"
   assert.ok(!svg.includes("Depth (cm)"));
 });

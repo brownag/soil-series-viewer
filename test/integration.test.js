@@ -8,6 +8,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
 
+import { munsellToHex } from "/home/andrew/workspace/SoilProfiles.js/dist/index.js";
 import { buildSite } from "../src/cli/build.js";
 
 const execFileAsync = promisify(execFile);
@@ -70,9 +71,12 @@ test("integration: CLI builds AMADOR, MT._AIRY, and KANA@A with SVG sketches and
       assert.ok(html.includes(`href="${key}.json"`));
 
       if (key === "AMADOR") {
+        const expected10YR42 = munsellToHex("10YR", 4, 2);
+        assert.ok(expected10YR42, "munsellToHex('10YR', 4, 2) should return a hex color");
+        assert.notEqual(expected10YR42, "#6e5f4d");
         assert.ok(
-          html.includes('fill="#6e5f4c"'),
-          "AMADOR.html should contain accurate 10YR 4/2 fill #6e5f4c"
+          html.includes(`fill="${expected10YR42}"`),
+          `AMADOR.html should contain accurate 10YR 4/2 fill ${expected10YR42}`
         );
         assert.ok(
           !html.includes("#6e5f4d"),

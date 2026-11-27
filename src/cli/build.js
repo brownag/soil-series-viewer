@@ -1,7 +1,7 @@
 /**
- * Static site builder CLI for soil-series-viewer (v1).
- * Loads joined SC + SKB records, copies usdastyle.css and raw .txt/.json files,
- * and writes `OSD_Docs/<L>/<KEY>.html` pages.
+ * Static site builder CLI for soil-series-viewer (v1/v2).
+ * Loads joined SC + SKB records, copies styles/client assets, builds search
+ * index and color-strip shards, and writes `index.html` + `OSD_Docs/<L>/<KEY>.html`.
  */
 
 import fs from "node:fs";
@@ -9,12 +9,15 @@ import fsp from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
+import { buildColorStripShards } from "../index/color-strips.js";
+import { buildSearchIndex } from "../index/search-index.js";
 import {
   DEFAULT_SC_PATH,
   DEFAULT_SKB_DIR,
   loadCorpus,
 } from "../loader/index.js";
 import { keyToRelativePath } from "../loader/keys.js";
+import { renderHomePage } from "../render/home-page.js";
 import { renderProfileSketch } from "../render/profile-sketch.js";
 import { renderSeriesPage } from "../render/series-page.js";
 
@@ -30,6 +33,13 @@ function defaultRenderSketch(record) {
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export const DEFAULT_CSS_PATH = path.resolve(__dirname, "../styles/usdastyle.css");
+export const DEFAULT_HOME_CSS_PATH = path.resolve(__dirname, "../styles/home.css");
+export const DEFAULT_CLIENT_DIR = path.resolve(__dirname, "../client");
+export const CLIENT_ASSET_FILES = Object.freeze([
+  "home-app.js",
+  "search-engine.js",
+  "strip-svg.js",
+]);
 export const DEFAULT_OSD_TXT_DIR = "/home/andrew/workspace/OSDRegistry/OSD";
 export const DEFAULT_OUT_DIR = "dist";
 
@@ -134,12 +144,15 @@ export function parseCliArgs(argv) {
  * @param {string} [options.skbDir]
  * @param {string} [options.osdTxtDir]
  * @param {string} [options.cssPath]
+ * @param {string} [options.homeCssPath]
+ * @param {string} [options.clientDir]
  * @param {(record: object) => (string|null)} [options.renderSketch]
  * @returns {Promise<{
  *   outDir: string,
  *   builtCount: number,
  *   txtCopied: number,
  *   jsonCopied: number,
+ *   stripShards: number,
  *   report: object,
  * }>}
  */
@@ -152,6 +165,8 @@ export async function buildSite(options = {}) {
     skbDir = DEFAULT_SKB_DIR,
     osdTxtDir = DEFAULT_OSD_TXT_DIR,
     cssPath = DEFAULT_CSS_PATH,
+    homeCssPath = DEFAULT_HOME_CSS_PATH,
+    clientDir = DEFAULT_CLIENT_DIR,
     renderSketch = defaultRenderSketch,
   } = options;
 
@@ -163,8 +178,44 @@ export async function buildSite(options = {}) {
   });
 
   const resolvedOut = path.resolve(outDir);
-  await fsp.mkdir(resolvedOut, { recursive: true });
-  await fsp.copyFile(cssPath, path.join(resolvedOut, "usdastyle.css"));
+  const assetsDir = path.join(resolvedOut, "assets");
+  const dataDir = path.join(resolvedOut, "data");
+  const stripsDir = path.join(dataDir, "strips");
+
+  await Promise.all([
+    fsp.mkdir(resolvedOut, { recursive: true }),
+    fsp.mkdir(assetsDir, { recursive: true }),
+    fsp.mkdir(stripsDir, { recursive: true }),
+  ]);
+
+  await Promise.all([
+    fsp.copyFile(cssPath, path.join(resolvedOut, "usdastyle.css")),
+    fsp.copyFile(homeCssPath, path.join(resolvedOut, "home.css")),
+    ...CLIENT_ASSET_FILES.map((fileName) =>
+      fsp.copyFile(path.join(clientDir, fileName), path.join(assetsDir, fileName))
+    ),
+  ]);
+
+  const searchIndex = buildSearchIndex(records);
+  const stripShards = buildColorStripShards(records);
+  const shardEntries = Object.entries(stripShards);
+  const homeHtml = renderHomePage({ totalCount: records.length });
+
+  await Promise.all([
+    fsp.writeFile(path.join(resolvedOut, "index.html"), homeHtml, "utf8"),
+    fsp.writeFile(
+      path.join(dataDir, "search-index.json"),
+      JSON.stringify(searchIndex),
+      "utf8"
+    ),
+    ...shardEntries.map(([letter, shard]) =>
+      fsp.writeFile(
+        path.join(stripsDir, `${letter}.json`),
+        JSON.stringify(shard),
+        "utf8"
+      )
+    ),
+  ]);
 
   const osdDocsRoot = path.join(resolvedOut, "OSD_Docs");
   const letters = new Set(records.map((r) => r.letter));
@@ -226,6 +277,7 @@ export async function buildSite(options = {}) {
     builtCount,
     txtCopied,
     jsonCopied,
+    stripShards: shardEntries.length,
     report,
   };
 }

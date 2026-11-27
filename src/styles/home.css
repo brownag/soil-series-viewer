@@ -1,0 +1,347 @@
+/* USDA-NRCS Soil Series Viewer — Home Page & Gallery Stylesheet
+ * Extends palette and typography custom properties defined in usdastyle.css.
+ */
+
+body {
+  background-color: var(--usda-chrome-bg, #3e3e3e);
+  color: var(--usda-text, #000000);
+  margin: 0;
+  padding: 0;
+  font-family: var(--usda-font-chrome, Verdana, Geneva, sans-serif);
+  font-size: var(--usda-font-chrome-size, 11px);
+}
+
+/* Centered 1100px white home container */
+.home-page {
+  background-color: var(--usda-surface-bg, #ffffff);
+  color: var(--usda-text, #000000);
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 14px 18px;
+  box-sizing: border-box;
+  min-height: 100vh;
+}
+
+.home-page a:link {
+  color: var(--usda-link, #000099);
+  text-decoration: none;
+}
+
+.home-page a:visited {
+  color: var(--usda-link-visited, #660099);
+  text-decoration: none;
+}
+
+.home-page a:hover {
+  color: var(--usda-link, #000099);
+  text-decoration: underline;
+}
+
+/* Home header banner */
+.home-header {
+  border: 1px solid var(--usda-table-border, #228623);
+  margin-bottom: 12px;
+}
+
+.home-header-bar {
+  background-color: var(--usda-table-header-bg, #248621);
+  color: var(--usda-table-header-text, #ffffff);
+  padding: 8px 12px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.home-title {
+  margin: 0;
+  font-family: var(--usda-font-narrative, Georgia, "Times New Roman", Times, serif);
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--usda-table-header-text, #ffffff);
+}
+
+.home-subtitle {
+  padding: 6px 12px;
+  background-color: var(--usda-nav-right-bg, #F2F2F2);
+  border-top: 1px solid var(--usda-table-border, #228623);
+  font-family: var(--usda-font-chrome, Verdana, Geneva, sans-serif);
+  font-size: var(--usda-font-chrome-size, 11px);
+  color: var(--usda-text, #000000);
+}
+
+/* Search toolbar */
+.home-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  background-color: var(--usda-nav-right-bg, #F2F2F2);
+  border: 1px solid var(--usda-footer-border, #B8B8B8);
+  margin-bottom: 12px;
+}
+
+.home-search-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  flex: 1 1 360px;
+  min-width: 0;
+}
+
+.home-search-label {
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.home-search-input {
+  flex: 1 1 220px;
+  min-width: 160px;
+  padding: 5px 8px;
+  border: 1px solid var(--usda-table-border, #228623);
+  background-color: var(--usda-surface-bg, #ffffff);
+  color: var(--usda-text, #000000);
+  font-family: var(--usda-font-chrome, Verdana, Geneva, sans-serif);
+  font-size: var(--usda-font-chrome-size, 11px);
+  box-sizing: border-box;
+}
+
+.home-search-input:focus {
+  outline: 2px solid var(--usda-table-header-bg, #248621);
+  outline-offset: 1px;
+}
+
+.home-search-hint {
+  color: #444444;
+  font-size: 10px;
+}
+
+.home-toolbar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.home-status {
+  font-weight: bold;
+  color: var(--usda-text, #000000);
+}
+
+.home-clear-btn {
+  padding: 4px 10px;
+  border: 1px solid var(--usda-table-border, #228623);
+  background-color: var(--usda-surface-bg, #ffffff);
+  color: var(--usda-link, #000099);
+  font-family: var(--usda-font-chrome, Verdana, Geneva, sans-serif);
+  font-size: var(--usda-font-chrome-size, 11px);
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.home-clear-btn:hover {
+  background-color: var(--usda-table-header-bg, #248621);
+  color: var(--usda-table-header-text, #ffffff);
+}
+
+/* Two-column layout: facet sidebar + gallery results */
+.home-layout {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.home-facets {
+  flex: 0 0 250px;
+  width: 250px;
+  background-color: var(--usda-nav-right-bg, #F2F2F2);
+  border: 1px solid var(--usda-table-border, #228623);
+  box-sizing: border-box;
+}
+
+.home-facets-header {
+  background-color: var(--usda-table-header-bg, #248621);
+  color: var(--usda-table-header-text, #ffffff);
+  font-weight: bold;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--usda-table-border, #228623);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.home-facets-body {
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.facet-group {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.facet-label {
+  font-weight: bold;
+  color: var(--usda-text, #000000);
+}
+
+.facet-select {
+  width: 100%;
+  padding: 4px 6px;
+  border: 1px solid var(--usda-footer-border, #B8B8B8);
+  background-color: var(--usda-surface-bg, #ffffff);
+  color: var(--usda-text, #000000);
+  font-family: var(--usda-font-chrome, Verdana, Geneva, sans-serif);
+  font-size: var(--usda-font-chrome-size, 11px);
+  box-sizing: border-box;
+}
+
+.facet-checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 0;
+  border-top: 1px solid var(--usda-footer-border, #B8B8B8);
+  margin-top: 2px;
+}
+
+.facet-collapse > summary {
+  cursor: pointer;
+  font-weight: bold;
+  padding: 4px 0;
+  color: var(--usda-text, #000000);
+}
+
+.home-results {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* Gallery grid & profile cards */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+  gap: 12px;
+}
+
+.series-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--usda-footer-border, #B8B8B8);
+  background-color: var(--usda-surface-bg, #ffffff);
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.series-card:hover,
+.series-card:focus-within {
+  border-color: var(--usda-table-border, #228623);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+}
+
+.series-card-sketch {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 146px;
+  padding: 6px 4px;
+  margin-bottom: 8px;
+  background-color: var(--usda-nav-right-bg, #F2F2F2);
+  border: 1px solid var(--usda-footer-border, #B8B8B8);
+}
+
+.series-card-sketch svg {
+  display: block;
+}
+
+.series-card-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-family: var(--usda-font-chrome, Verdana, Geneva, sans-serif);
+  font-size: var(--usda-font-chrome-size, 11px);
+  line-height: 1.35;
+}
+
+.series-card-name {
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.series-card-tax {
+  color: #333333;
+  word-break: break-word;
+}
+
+.series-card-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 2px;
+}
+
+.series-card-badge {
+  display: inline-block;
+  padding: 1px 5px;
+  border: 1px solid var(--usda-footer-border, #B8B8B8);
+  background-color: var(--usda-nav-right-bg, #F2F2F2);
+  font-size: 10px;
+}
+
+.series-card-badge--benchmark {
+  border-color: var(--usda-table-border, #228623);
+  background-color: var(--usda-table-header-bg, #248621);
+  color: var(--usda-table-header-text, #ffffff);
+  font-weight: bold;
+}
+
+.home-empty-state {
+  padding: 20px 16px;
+  border: 1px solid var(--usda-footer-border, #B8B8B8);
+  background-color: var(--usda-nav-right-bg, #F2F2F2);
+  text-align: center;
+}
+
+.home-footer {
+  border-top: 1px solid var(--usda-footer-border, #B8B8B8);
+  margin-top: 16px;
+  padding-top: 8px;
+  font-family: var(--usda-font-chrome, Verdana, Geneva, sans-serif);
+  font-size: var(--usda-font-chrome-size, 11px);
+  color: var(--usda-text, #000000);
+}
+
+/* Responsive collapse at <= 767px */
+@media (max-width: 767px) {
+  .home-page {
+    max-width: 100%;
+    padding: 10px 12px;
+  }
+
+  .home-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .home-layout {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .home-facets {
+    flex: none;
+    width: 100%;
+  }
+
+  .gallery-grid {
+    grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+    gap: 8px;
+  }
+}

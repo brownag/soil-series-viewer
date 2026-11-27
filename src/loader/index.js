@@ -4,8 +4,11 @@ import path from "node:path";
 import { seriesNameToKey, keyToRelativePath } from "./keys.js";
 import { normalizeSkbDoc, naToNull } from "./normalize.js";
 
-export const DEFAULT_SC_PATH = "/home/andrew/workspace/OSDRegistry/SC/SCDB.csv";
-export const DEFAULT_SKB_DIR = "/home/andrew/workspace/SoilKnowledgeBase/inst/extdata/OSD";
+export const DEFAULT_SC_PATH =
+  process.env.OSD_SC_PATH || "/home/andrew/workspace/OSDRegistry/SC/SCDB.csv";
+export const DEFAULT_SKB_DIR =
+  process.env.OSD_SKB_DIR ||
+  "/home/andrew/workspace/SoilKnowledgeBase/inst/extdata/OSD";
 
 const SC_STATUSES = ["Established", "Tentative", "Inactive"];
 

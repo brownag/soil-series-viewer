@@ -3,7 +3,7 @@
  * Reuses SoilProfiles.js Munsell conversion and SKB-9/SKB-10 horizon helpers.
  */
 
-import { munsellToHex } from "/home/andrew/workspace/SoilProfiles.js/dist/index.js";
+import { munsellToHex } from "../lib/soil-profiles.js";
 import {
   FALLBACK_HORIZON_COLOR,
   isPlottableHorizon,

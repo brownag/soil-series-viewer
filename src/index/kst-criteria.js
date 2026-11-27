@@ -5,7 +5,9 @@
 import fs from "node:fs";
 import path from "node:path";
 
-export const DEFAULT_KST_DIR = "/home/andrew/workspace/SoilKnowledgeBase/inst/extdata/KST";
+export const DEFAULT_KST_DIR =
+  process.env.OSD_KST_DIR ||
+  "/home/andrew/workspace/SoilKnowledgeBase/inst/extdata/KST";
 
 /**
  * Create an empty KST criteria index structure.

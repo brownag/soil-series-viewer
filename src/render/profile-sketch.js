@@ -10,7 +10,7 @@ import {
   SoilProfileCollection,
   mapToHorizon,
   renderStaticSVG,
-} from "/home/andrew/workspace/SoilProfiles.js/dist/index.js";
+} from "../lib/soil-profiles.js";
 
 export const DEFAULT_SKETCH_OPTIONS = Object.freeze({
   width: 140,

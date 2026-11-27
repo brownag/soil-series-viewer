@@ -108,7 +108,8 @@ export const CLIENT_ASSET_FILES = Object.freeze([
   "strip-svg.js",
   "taxonomy-app.js",
 ]);
-export const DEFAULT_OSD_TXT_DIR = "/home/andrew/workspace/OSDRegistry/OSD";
+export const DEFAULT_OSD_TXT_DIR =
+  process.env.OSD_TXT_DIR || "/home/andrew/workspace/OSDRegistry/OSD";
 export const DEFAULT_OUT_DIR = "dist";
 
 /**
@@ -133,6 +134,9 @@ export function parseCliArgs(argv) {
   let scPath = DEFAULT_SC_PATH;
   let skbDir = DEFAULT_SKB_DIR;
   let osdTxtDir = DEFAULT_OSD_TXT_DIR;
+  let kstDir = DEFAULT_KST_DIR;
+  let dstDataPath = DEFAULT_DST_DATA_PATH;
+  let featurelistPath = DEFAULT_FEATURELIST_PATH;
   let pagefind = false;
   let help = false;
 
@@ -189,6 +193,12 @@ export function parseCliArgs(argv) {
       skbDir = argv[++i];
     } else if (arg === "--osd-txt") {
       osdTxtDir = argv[++i];
+    } else if (arg === "--kst-dir") {
+      kstDir = argv[++i];
+    } else if (arg === "--dst-data") {
+      dstDataPath = argv[++i];
+    } else if (arg === "--featurelist") {
+      featurelistPath = argv[++i];
     } else {
       throw new Error(`Unknown CLI argument: ${arg}`);
     }
@@ -201,6 +211,9 @@ export function parseCliArgs(argv) {
     scPath,
     skbDir,
     osdTxtDir,
+    kstDir,
+    dstDataPath,
+    featurelistPath,
     pagefind,
     help,
   };

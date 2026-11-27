@@ -6,9 +6,11 @@
 import fs from "node:fs";
 
 export const DEFAULT_FEATURELIST_PATH =
+  process.env.OSD_FEATURELIST_PATH ||
   "/home/andrew/workspace/SoilKnowledgeBase/inst/extdata/KST/2014_KST_EN_featurelist.json";
 
 export const DEFAULT_DST_DATA_PATH =
+  process.env.OSD_DST_DATA_PATH ||
   "/home/andrew/workspace/DST/data/dst-data.json";
 
 /**

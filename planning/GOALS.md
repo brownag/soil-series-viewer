@@ -1,65 +1,60 @@
 # Project Goals (`planning/GOALS.md`)
 
-Last Updated: 2026-11-26
-Source: `docs/research/soil-series-viewer-research.md` (§0 Decisions, §11 Candidate Goals G1–G27)
+Last Updated: 2026-11-27
+Source State: `planning/STATE_2.md` (Orchestrations 1 & 2 complete; `npm test` 46/46 passing)
 
-## Circled Goal (Active)
+## Completed Goals
 
-- **[G1]** Data loader module reads SKB JSON (`SKB/inst/extdata/OSD/{A..Z}/<NAME>.json`) and SC CSV (`OSDR/SC/SCDB.csv`), normalizes series name keys (uppercase, space→`_`, backtick→`@`, preserving periods), unwraps nested `HORIZONS` (`SKB-1`), strips repeated section headers (`SKB-12`), converts `"NA"` text sentinels to `null` (`SKB-17`), joins by key, and emits a match/coverage report.
-  - Why now: Root bottleneck — unblocks 13+ downstream goals (G2, G4, G6, G7, G9, G13, G16, and transitively G8, G10–G12, G14–G15, G19–G20).
-  - Exit criteria: Loader runs cleanly over the full corpus (24,928 SKB JSON + 26,576 SC rows), handles `AMADOR`, `MT._AIRY`, and `KANA@A` edge cases, unwraps `HORIZONS[0]`, strips section prefixes, normalizes `"NA"` to `null`, and outputs deterministic match/unmatched counts by status.
-  - First action: Define the normalized series record schema and filename-key mapper, then implement and test the loader against `AMADOR.json` + `SCDB.csv`.
+- **[G1]** Data loader (`src/loader/`) — completed in Orchestration 1 (`f6af05f`)
+- **[G3]** Old-school `usdastyle.css` stylesheet — completed in Orchestration 1 (`6b4f66a`)
+- **[G5]** Accurate Munsell-to-hex conversion via upstream `SoilProfiles.js` — completed in Orchestration 1
+- **[G2]** Series page v1 + build CLI (`src/render/series-page.js`, `src/cli/build.js`) — completed in Orchestration 1 (`74e31d3`)
+- **[G4]** Build-time `SoilProfiles.js` SVG profile sketch on series pages — completed in Orchestration 1 (`bda2e43`, `e048f48`)
+- **[G7]** Client-side search, wildcard/fuzzy, and SC facet filter engine + `data/search-index.json` — completed in Orchestration 2 (`28b3cb3`, `80d9d57`)
+- **[G6]** Home page virtualized profile gallery + letter-sharded `data/strips/<A..Z>.json` + `home.css` — completed in Orchestration 2 (`f0bd5f5`, `8d0c33c`, `987a8a4`)
 
-- **[G5]** Accurate Munsell-to-hex color conversion uses a full LUT (fixing the 6-hue collapse where `10YR 4/2` renders identically to `5YR 4/2` as `#6e5f4d`) and passes reference color tests.
-  - Why now: Strictly orthogonal to G1; runs in parallel with Wave 1 so profile sketches (G4) and future gallery thumbnails (G6) render accurate soil colors from the start. Implementation location (upstream `SoilProfiles.js` PR vs. local build precomputation) to be decided in `/plan-wave`.
-  - Exit criteria: `10YR 4/2` and `5YR 4/2` produce distinct, reference-verified hex values; neutral `N` hues and missing-color fallbacks pass unit tests.
-  - First action: Audit `SPJ/soilprofiles-munsell/munsell-data.json` against a reference Munsell table and decide whether to wire it into `SoilProfiles.js` or precompute hex in the viewer build.
+## Circled Goal (Active — Orchestration 3: Series Page Enrichment)
+
+Three orthogonal, high-value series-page goals unblocked by `G1`, `G2`, `G4`, and `G6` (`renderStripSvg`):
+
+- **[G12]** Series cross-links enrich `COMPETING SERIES` and `GEOGRAPHICALLY ASSOCIATED SOILS` text with static relative links (`../<L>/<KEY>.html`) matched against the corpus name/key table (longest-match-first, case-aware, self-excluded).
+  - Why now: Makes every OSD page navigable as a connected graph using the existing corpus index, with zero client-side JS overhead.
+  - Exit criteria: `src/render/cross-links.js` links single- and multi-word series names in Competing & Associated sections without false-positive lowercase prose matches; unit + E2E tests pass.
+  - First action: Implement `buildSeriesLinkIndex` and `linkSeriesNames` in `src/render/cross-links.js` (Task `3.1.1`).
+
+- **[G13]** Same-family competing-series panel groups series by SC `taxclname` and renders up to 16 peer cards with mini profile strip SVGs (reusing `renderStripSvg`) plus a `+N more` note.
+  - Why now: Reuses the already-built `src/client/strip-svg.js` renderer at build time to turn static OSD pages into visual family comparisons.
+  - Exit criteria: `src/render/competing-panel.js` groups by normalized `taxclname`, excludes self, caps at 16 with `+N more`, embeds mini strip SVGs, and passes unit + E2E tests.
+  - First action: Implement `buildFamilyIndex` and `renderCompetingPanel` in `src/render/competing-panel.js` (Task `3.1.2`).
+
+- **[G16]** Display-side data-quality annotations detect `docs/research/skb-issues.md` issues (`SKB-2`..`5`, `SKB-9`..`11`, `SC-MISSING`, `SKB-MISSING`) without mutating SKB JSON, render a collapsible `<details class="osd-qa-notes no-print">` on affected series pages, and emit `<out>/data/qa-report.json`.
+  - Why now: Closes the §0 transparency requirement before full-corpus publishing and provides a machine-readable QA baseline for future refreshes.
+  - Exit criteria: `src/qa/detect.js` and `src/qa/report.js` detect all target codes, render escaped `<details>` blocks, emit deterministic `data/qa-report.json`, and pass unit + E2E tests.
+  - First action: Implement `detectRecordIssues`, `renderQaNotes`, and `buildQaReport` in `src/qa/` (Task `3.1.3`).
 
 ## Sequenced Goals (Dependency DAG)
 
-### Wave 1 — First Visible Milestone (AMADOR-style pages + sketches)
+### Taxonomy & Knowledge Browse
 
-- **[G3]** Old-school stylesheet defines CSS tokens from `usdastyle.css` (Verdana 11 px, `#3e3e3e` chrome, 767 px body, `#248621` table headers, `#000099` / `#660099` links), responsive layout, and print styles.
-  - Depends on: — (orthogonal; paired with G1/G2/G4 in Wave 1)
-- **[G2]** Series page v1 generates HTML per series reproducing the old OSD anatomy (header lines, `<h1>`, bold section labels, bold horizon names) from SKB JSON, styled with G3, plus plain `.txt` and `.json` download links.
-  - Depends on: G1, G3
-- **[G4]** Profile sketch per series renders an SVG via `SoilProfiles.js` at build time with missing-color/depth fallbacks, embedded alongside the Typical Pedon on the series page.
-  - Depends on: G1 (visually improved by G5)
-
-### Core Discovery, Browse & Quality
-
-- **[G16]** Data-quality annotations handle `skb-issues.md` (SKB-1 to SKB-17) on the display side, flagging missing colors/depths, suspect rupture/structure values, obsolete taxa, and unclassified series on pages and in a build QA report.
-  - Depends on: G1
-- **[G7]** Client-side search and filter supports name prefix, fuzzy, and wildcard search plus SC facets (status, order→subgroup, family classes, state, MLRA office, benchmark flag).
-  - Depends on: G1
-- **[G6]** Home page profile gallery displays a filterable, virtualized grid of series thumbnails rendered from compact precomputed color strips.
-  - Depends on: G1, G4 (improved by G5)
 - **[G9]** Taxonomy tree browse pages navigate order → suborder → great group → subgroup → family → series with SC counts and member sketch strips.
-  - Depends on: G1, G4
-- **[G13]** Competing-series panel groups same-family series from SC `taxclname` with a side-by-side sketch strip.
-  - Depends on: G1, G4
-- **[G19]** Interactive horizon tooltips and profile comparison wire `SoilProfiles.js` event listeners on series pages.
-  - Depends on: G4
-
-### Content Enrichment, Search & Deployment
-
-- **[G8]** Full-text search indexes OSD section content client-side via Pagefind.
-  - Depends on: G2
-- **[G12]** Series cross-links enrich Competing Series and Geographically Associated Soils text by matching SC series names, with hover cards.
-  - Depends on: G2
-- **[G15]** Hosting and URL scheme serves canonical slugs with URL rewriting for `OSD_Docs/<L>/<NAME>.html` compatibility and redirects for punctuation/casing edge cases.
-  - Depends on: G2
-- **[G14]** Incremental build and CI hashes per-series inputs, rebuilds only changed pages on a weekly schedule after SKB's Monday 06:00 UTC refresh, and deploys.
-  - Depends on: G2, G15
-- **[G20]** Offline/PWA support caches static assets and JSON indexes using DST's service-worker pattern.
-  - Depends on: G2
-
-### Taxonomy Knowledge Integration
-
+  - Depends on: G1, G4 (complete)
 - **[G10]** KST definitions display per-taxon criteria text with chapter/page references on taxonomy tree nodes and series breadcrumb tooltips (using SKB 2022 criteria + DST code tree).
   - Depends on: G9
 - **[G11]** Glossary and diagnostic-feature pages combine DST glossary (136 terms) and SKB 2014 featurelist (140 features), linked from series and taxonomy pages.
   - Depends on: G10
+
+### Search, Interactivity & Deployment
+
+- **[G8]** Full-text search indexes OSD section content client-side via Pagefind.
+  - Depends on: G2 (complete)
+- **[G19]** Interactive horizon tooltips and profile comparison wire `SoilProfiles.js` event listeners on series pages.
+  - Depends on: G4 (complete)
+- **[G15]** Hosting and URL scheme serves canonical slugs with URL rewriting for `OSD_Docs/<L>/<NAME>.html` compatibility and redirects for punctuation/casing edge cases.
+  - Depends on: G2 (complete)
+- **[G14]** Incremental build and CI hashes per-series inputs, rebuilds only changed pages on a weekly schedule after SKB's Monday 06:00 UTC refresh, and deploys.
+  - Depends on: G2, G15
+- **[G20]** Offline/PWA support caches static assets and JSON indexes using DST's service-worker pattern.
+  - Depends on: G2 (complete)
 
 ## Independent Backlog
 

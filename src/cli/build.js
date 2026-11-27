@@ -10,7 +10,18 @@ import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { buildColorStripShards } from "../index/color-strips.js";
+import {
+  DEFAULT_DST_DATA_PATH,
+  DEFAULT_FEATURELIST_PATH,
+  buildGlossaryIndex,
+} from "../index/glossary.js";
+import {
+  DEFAULT_KST_DIR,
+  buildKstCriteriaPayload,
+  loadKstCriteriaIndex,
+} from "../index/kst-criteria.js";
 import { buildSearchIndex } from "../index/search-index.js";
+import { buildTaxonomyTree } from "../index/taxonomy-tree.js";
 import {
   DEFAULT_SC_PATH,
   DEFAULT_SKB_DIR,
@@ -24,9 +35,11 @@ import {
   renderCompetingPanel,
 } from "../render/competing-panel.js";
 import { buildSeriesLinkIndex } from "../render/cross-links.js";
+import { renderGlossaryPage } from "../render/glossary-page.js";
 import { renderHomePage } from "../render/home-page.js";
 import { renderProfileSketch } from "../render/profile-sketch.js";
 import { renderSeriesPage } from "../render/series-page.js";
+import { renderTaxonomyPage } from "../render/taxonomy-page.js";
 
 /**
  * Default sketch renderer hook for `buildSite`.
@@ -38,14 +51,40 @@ function defaultRenderSketch(record) {
   return renderProfileSketch(record).svg;
 }
 
+/**
+ * Collect all non-null KST 2022 codes present anywhere in a taxonomy tree.
+ *
+ * @param {Array<object>} orders
+ * @returns {Set<string>}
+ */
+function collectUsedKstCodes(orders) {
+  const usedCodes = new Set();
+  const stack = Array.isArray(orders) ? [...orders] : [];
+  while (stack.length > 0) {
+    const node = stack.pop();
+    if (typeof node?.code === "string" && node.code.length > 0) {
+      usedCodes.add(node.code);
+    }
+    if (Array.isArray(node?.children)) {
+      for (const child of node.children) {
+        stack.push(child);
+      }
+    }
+  }
+  return usedCodes;
+}
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export const DEFAULT_CSS_PATH = path.resolve(__dirname, "../styles/usdastyle.css");
 export const DEFAULT_HOME_CSS_PATH = path.resolve(__dirname, "../styles/home.css");
+export const DEFAULT_TAXONOMY_CSS_PATH = path.resolve(__dirname, "../styles/taxonomy.css");
 export const DEFAULT_CLIENT_DIR = path.resolve(__dirname, "../client");
 export const CLIENT_ASSET_FILES = Object.freeze([
+  "glossary-app.js",
   "home-app.js",
   "search-engine.js",
   "strip-svg.js",
+  "taxonomy-app.js",
 ]);
 export const DEFAULT_OSD_TXT_DIR = "/home/andrew/workspace/OSDRegistry/OSD";
 export const DEFAULT_OUT_DIR = "dist";
@@ -152,7 +191,11 @@ export function parseCliArgs(argv) {
  * @param {string} [options.osdTxtDir]
  * @param {string} [options.cssPath]
  * @param {string} [options.homeCssPath]
+ * @param {string} [options.taxonomyCssPath]
  * @param {string} [options.clientDir]
+ * @param {string} [options.kstDir]
+ * @param {string} [options.featurelistPath]
+ * @param {string} [options.dstDataPath]
  * @param {(record: object) => (string|null)} [options.renderSketch]
  * @returns {Promise<{
  *   outDir: string,
@@ -160,6 +203,8 @@ export function parseCliArgs(argv) {
  *   txtCopied: number,
  *   jsonCopied: number,
  *   stripShards: number,
+ *   taxonomyOrders: number,
+ *   glossaryTerms: number,
  *   report: object,
  *   qaSummary: {
  *     totalRecords: number,
@@ -178,7 +223,11 @@ export async function buildSite(options = {}) {
     osdTxtDir = DEFAULT_OSD_TXT_DIR,
     cssPath = DEFAULT_CSS_PATH,
     homeCssPath = DEFAULT_HOME_CSS_PATH,
+    taxonomyCssPath = DEFAULT_TAXONOMY_CSS_PATH,
     clientDir = DEFAULT_CLIENT_DIR,
+    kstDir = DEFAULT_KST_DIR,
+    featurelistPath = DEFAULT_FEATURELIST_PATH,
+    dstDataPath = DEFAULT_DST_DATA_PATH,
     renderSketch = defaultRenderSketch,
   } = options;
 
@@ -193,16 +242,21 @@ export async function buildSite(options = {}) {
   const assetsDir = path.join(resolvedOut, "assets");
   const dataDir = path.join(resolvedOut, "data");
   const stripsDir = path.join(dataDir, "strips");
+  const taxonomyDir = path.join(resolvedOut, "taxonomy");
+  const glossaryDir = path.join(resolvedOut, "glossary");
 
   await Promise.all([
     fsp.mkdir(resolvedOut, { recursive: true }),
     fsp.mkdir(assetsDir, { recursive: true }),
     fsp.mkdir(stripsDir, { recursive: true }),
+    fsp.mkdir(taxonomyDir, { recursive: true }),
+    fsp.mkdir(glossaryDir, { recursive: true }),
   ]);
 
   await Promise.all([
     fsp.copyFile(cssPath, path.join(resolvedOut, "usdastyle.css")),
     fsp.copyFile(homeCssPath, path.join(resolvedOut, "home.css")),
+    fsp.copyFile(taxonomyCssPath, path.join(resolvedOut, "taxonomy.css")),
     ...CLIENT_ASSET_FILES.map((fileName) =>
       fsp.copyFile(path.join(clientDir, fileName), path.join(assetsDir, fileName))
     ),
@@ -212,6 +266,22 @@ export async function buildSite(options = {}) {
   const stripShards = buildColorStripShards(records);
   const shardEntries = Object.entries(stripShards);
   const homeHtml = renderHomePage({ totalCount: records.length });
+
+  const kstCriteriaIndex = loadKstCriteriaIndex({ kstDir });
+  const taxonomyTree = buildTaxonomyTree(records, {
+    kstCodesByName: kstCriteriaIndex.codesByName,
+  });
+  const usedCodes = collectUsedKstCodes(taxonomyTree.orders);
+  const kstCriteriaPayload = buildKstCriteriaPayload(kstCriteriaIndex, usedCodes);
+  const glossaryIndex = buildGlossaryIndex({ featurelistPath, dstDataPath });
+
+  const taxonomyHtml = renderTaxonomyPage({
+    totalSeries: taxonomyTree.totalSeries,
+    classifiedSeries: taxonomyTree.classifiedSeries,
+  });
+  const glossaryHtml = renderGlossaryPage({
+    totalTerms: glossaryIndex.totalTerms,
+  });
 
   const linkIndex = buildSeriesLinkIndex(records);
   const familyIndex = buildFamilyIndex(records);
@@ -223,6 +293,8 @@ export async function buildSite(options = {}) {
 
   await Promise.all([
     fsp.writeFile(path.join(resolvedOut, "index.html"), homeHtml, "utf8"),
+    fsp.writeFile(path.join(taxonomyDir, "index.html"), taxonomyHtml, "utf8"),
+    fsp.writeFile(path.join(glossaryDir, "index.html"), glossaryHtml, "utf8"),
     fsp.writeFile(
       path.join(dataDir, "search-index.json"),
       JSON.stringify(searchIndex),
@@ -231,6 +303,21 @@ export async function buildSite(options = {}) {
     fsp.writeFile(
       path.join(dataDir, "qa-report.json"),
       JSON.stringify(qaReport),
+      "utf8"
+    ),
+    fsp.writeFile(
+      path.join(dataDir, "taxonomy-tree.json"),
+      JSON.stringify(taxonomyTree),
+      "utf8"
+    ),
+    fsp.writeFile(
+      path.join(dataDir, "kst-criteria.json"),
+      JSON.stringify(kstCriteriaPayload),
+      "utf8"
+    ),
+    fsp.writeFile(
+      path.join(dataDir, "glossary.json"),
+      JSON.stringify(glossaryIndex),
       "utf8"
     ),
     ...shardEntries.map(([letter, shard]) =>
@@ -296,6 +383,7 @@ export async function buildSite(options = {}) {
           linkIndex,
           competingPanelHtml,
           qaNotesHtml,
+          kstCriteriaIndex,
         });
         await fsp.writeFile(htmlDest, html, "utf8");
         builtCount++;
@@ -309,6 +397,8 @@ export async function buildSite(options = {}) {
     txtCopied,
     jsonCopied,
     stripShards: shardEntries.length,
+    taxonomyOrders: taxonomyTree.orders.length,
+    glossaryTerms: glossaryIndex.totalTerms,
     report,
     qaSummary: {
       totalRecords: qaReport.totalRecords,

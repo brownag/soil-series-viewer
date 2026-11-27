@@ -1,7 +1,7 @@
 # Project Goals (`planning/GOALS.md`)
 
 Last Updated: 2026-11-27
-Source State: `planning/STATE_3.md` (Orchestrations 1–3 complete; `npm test` 75/75 passing)
+Source State: `planning/STATE_4.md` (Orchestrations 1–4 complete; `npm test` 106/106 passing)
 
 ## Completed Goals
 
@@ -15,34 +15,35 @@ Source State: `planning/STATE_3.md` (Orchestrations 1–3 complete; `npm test` 7
 - **[G12]** Series cross-links in `COMPETING SERIES` and `GEOGRAPHICALLY ASSOCIATED SOILS` (`src/render/cross-links.js`) — completed in Orchestration 3 (`dfe10c0`, `be7bbe2`, `cbfc082`)
 - **[G13]** Same-family competing-series panel from SC `taxclname` with mini strip SVGs (`src/render/competing-panel.js`) — completed in Orchestration 3 (`dfe10c0`, `be7bbe2`, `cbfc082`)
 - **[G16]** Display-side SKB/SC data-quality annotations (`<details class="osd-qa-notes no-print">`) + `data/qa-report.json` (`src/qa/`) — completed in Orchestration 3 (`dfe10c0`, `be7bbe2`, `cbfc082`)
+- **[G9]** Taxonomy tree explorer (`taxonomy/index.html`, `src/client/taxonomy-app.js`, `data/taxonomy-tree.json`) — completed in Orchestration 4 (`a123d79`, `1f23166`, `0570320`)
+- **[G10]** KST 2022 taxon criteria & chapter/page tooltips (`src/index/kst-criteria.js`, `data/kst-criteria.json`) — completed in Orchestration 4 (`a123d79`, `1f23166`, `0570320`)
+- **[G11]** Searchable Glossary & Diagnostic Features (`glossary/index.html`, `src/index/glossary.js`, `data/glossary.json`) — completed in Orchestration 4 (`a123d79`, `1f23166`, `0570320`)
 
-## Circled Goal (Active — Orchestration 4: Taxonomy Tree Browse & Knowledge Integration)
+## Circled Goal (Active — Orchestration 5: Full-Text Search, Interactive Profiles & Offline PWA)
 
-- **[G9]** Taxonomy tree browse pages navigate order → suborder → great group → subgroup → family → series with SC counts, breadcrumb navigation, and member sketch strips, linked from the home page and series pages.
-  - Why now: Highest-leverage remaining root goal — unblocks `G10` (KST definitions) and transitively `G11` (glossary & diagnostic features), while reusing `renderStripSvg` and SC taxonomy fields already loaded in `G1`.
-  - Exit criteria: Pure taxonomy tree builder + HTML renderer unit tests, CLI emission in `src/cli/build.js`, breadcrumb links on series pages and home nav link, E2E integration test, full `npm test` green.
-  - First action: Inspect local SKB KST/featurelist data availability, confirm `G9` + `G10`/`G11` scope in `/plan-wave`, and draft `planning/EXECUTION_PLAN_4.md`.
+- **[G8]** Full-text search indexes OSD section content client-side via Pagefind, with a search UI accessible from the home page returning matching series snippets and links.
+  - Why now: Strictly orthogonal leaf goal (depends only on completed `G2`); adds full-text OSD body search alongside existing `G7` name/SC-facet search.
+  - Exit criteria: `data-pagefind-*` markup on series pages, optional `--pagefind` CLI runner with graceful fallback, client full-text search panel, unit + E2E tests green.
+  - First action: Check local `pagefind` availability and design `data-pagefind-*` attributes + client integration in `EXECUTION_PLAN_5.md`.
 
-- **[G10]** KST definitions display per-taxon criteria text with chapter/page references on taxonomy tree nodes and series breadcrumb tooltips (tied into `G9` if local SKB KST data is ready).
-  - Depends on: G9
+- **[G19]** Interactive horizon tooltips and profile comparison wire interactive event listeners on series-page profile sketches and enable side-by-side profile comparison.
+  - Why now: Strictly orthogonal leaf goal (depends only on completed `G4`); upgrades static build-time profile sketches into interactive exploration tools.
+  - Exit criteria: Horizon `data-*` attributes on profile SVG, zero-dependency `src/client/profile-interactive.js` (tooltips + comparison drawer/panel), CSS styling, unit + E2E tests green.
+  - First action: Inspect `src/render/profile-sketch.js` SVG output and design tooltip/comparison UX in `EXECUTION_PLAN_5.md`.
 
-- **[G11]** Glossary and diagnostic-feature pages combine glossary and SKB featurelist definitions, linked from series and taxonomy pages (tied into `G9`/`G10` if local data is ready).
-  - Depends on: G10
+- **[G20]** Offline/PWA support caches static assets and JSON indexes using DST's service-worker and web-manifest pattern.
+  - Why now: Strictly orthogonal leaf goal (depends only on completed `G2`); makes the static site installable and usable offline in the field.
+  - Exit criteria: `src/pwa/generate-pwa.js` emitting `manifest.json` + `sw.js` with cache versioning, `<link rel="manifest">` + SW registration on all pages, unit + E2E tests green.
+  - First action: Inspect `/home/andrew/workspace/DST/sw.js` and `manifest.json` to mirror DST's caching strategy.
 
 ## Sequenced Goals (Dependency DAG)
 
-### Search, Interactivity & Deployment
+### Hosting & CI
 
 - **[G15]** Hosting and URL scheme serves canonical slugs with URL rewriting for `OSD_Docs/<L>/<NAME>.html` compatibility and redirects for punctuation/casing edge cases.
   - Depends on: G2 (complete)
 - **[G14]** Incremental build and CI hashes per-series inputs, rebuilds only changed pages on a weekly schedule after SKB's Monday 06:00 UTC refresh, and deploys.
   - Depends on: G2, G15
-- **[G8]** Full-text search indexes OSD section content client-side via Pagefind.
-  - Depends on: G2 (complete)
-- **[G19]** Interactive horizon tooltips and profile comparison wire `SoilProfiles.js` event listeners on series pages.
-  - Depends on: G4 (complete)
-- **[G20]** Offline/PWA support caches static assets and JSON indexes using DST's service-worker pattern.
-  - Depends on: G2 (complete)
 
 ## Independent Backlog
 

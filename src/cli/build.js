@@ -17,6 +17,13 @@ import {
   loadCorpus,
 } from "../loader/index.js";
 import { keyToRelativePath } from "../loader/keys.js";
+import { detectRecordIssues, renderQaNotes } from "../qa/detect.js";
+import { buildQaReport } from "../qa/report.js";
+import {
+  buildFamilyIndex,
+  renderCompetingPanel,
+} from "../render/competing-panel.js";
+import { buildSeriesLinkIndex } from "../render/cross-links.js";
 import { renderHomePage } from "../render/home-page.js";
 import { renderProfileSketch } from "../render/profile-sketch.js";
 import { renderSeriesPage } from "../render/series-page.js";
@@ -154,6 +161,11 @@ export function parseCliArgs(argv) {
  *   jsonCopied: number,
  *   stripShards: number,
  *   report: object,
+ *   qaSummary: {
+ *     totalRecords: number,
+ *     recordsWithIssues: number,
+ *     countsByCode: Record<string, number>,
+ *   },
  * }>}
  */
 export async function buildSite(options = {}) {
@@ -201,11 +213,24 @@ export async function buildSite(options = {}) {
   const shardEntries = Object.entries(stripShards);
   const homeHtml = renderHomePage({ totalCount: records.length });
 
+  const linkIndex = buildSeriesLinkIndex(records);
+  const familyIndex = buildFamilyIndex(records);
+  const issuesByKey = new Map();
+  for (const record of records) {
+    issuesByKey.set(record.key, detectRecordIssues(record));
+  }
+  const qaReport = buildQaReport(records, issuesByKey);
+
   await Promise.all([
     fsp.writeFile(path.join(resolvedOut, "index.html"), homeHtml, "utf8"),
     fsp.writeFile(
       path.join(dataDir, "search-index.json"),
       JSON.stringify(searchIndex),
+      "utf8"
+    ),
+    fsp.writeFile(
+      path.join(dataDir, "qa-report.json"),
+      JSON.stringify(qaReport),
       "utf8"
     ),
     ...shardEntries.map(([letter, shard]) =>
@@ -260,11 +285,17 @@ export async function buildSite(options = {}) {
             ? rawSketch.svg
             : rawSketch;
 
+        const competingPanelHtml = renderCompetingPanel(record, familyIndex);
+        const qaNotesHtml = renderQaNotes(issuesByKey.get(record.key) ?? []);
+
         const html = renderSeriesPage(record, {
           cssHref: "../../usdastyle.css",
           hasTxt,
           hasJson,
           sketchSvg,
+          linkIndex,
+          competingPanelHtml,
+          qaNotesHtml,
         });
         await fsp.writeFile(htmlDest, html, "utf8");
         builtCount++;
@@ -279,6 +310,11 @@ export async function buildSite(options = {}) {
     jsonCopied,
     stripShards: shardEntries.length,
     report,
+    qaSummary: {
+      totalRecords: qaReport.totalRecords,
+      recordsWithIssues: qaReport.recordsWithIssues,
+      countsByCode: qaReport.countsByCode,
+    },
   };
 }
 

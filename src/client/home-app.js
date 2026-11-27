@@ -3,6 +3,7 @@
  * Zero Node-only imports: runs natively in browsers and `node:test`.
  */
 
+import { initFullTextSearch } from "./fulltext-search.js";
 import { computeFacetCounts, FACET_KEY_MAP, filterSeries } from "./search-engine.js";
 import { renderStripSvg } from "./strip-svg.js";
 
@@ -296,9 +297,25 @@ export async function initHomeApp(doc = globalThis.document, env = globalThis) {
   const moreWrap = doc.getElementById("gallery-more-wrap");
   const loadMoreBtn = doc.getElementById("gallery-load-more");
   const sentinelEl = doc.getElementById("gallery-sentinel");
+  const fulltextPanel = doc.getElementById("fulltext-search-panel");
 
   if (!galleryGrid) {
     return null;
+  }
+
+  let fulltextPromise = null;
+  if (fulltextPanel) {
+    const fulltextOptions = {};
+    if (typeof env?.HOME_APP_PAGEFIND_PATH === "string" && env.HOME_APP_PAGEFIND_PATH.length > 0) {
+      fulltextOptions.basePath = env.HOME_APP_PAGEFIND_PATH;
+    }
+    if (env?.HOME_APP_PAGEFIND !== undefined) {
+      fulltextOptions.pagefind = env.HOME_APP_PAGEFIND;
+    }
+    if (typeof env?.HOME_APP_PAGEFIND_LOADER === "function") {
+      fulltextOptions.loader = env.HOME_APP_PAGEFIND_LOADER;
+    }
+    fulltextPromise = initFullTextSearch(fulltextPanel, fulltextOptions).catch(() => null);
   }
 
   const fetchFn = typeof env?.fetch === "function" ? env.fetch.bind(env) : null;
@@ -504,15 +521,21 @@ export async function initHomeApp(doc = globalThis.document, env = globalThis) {
     }
   }
 
+  const fulltext = fulltextPromise ? await fulltextPromise : null;
+
   return {
     state,
     applyFilters,
     clearFilters,
     renderNextBatch,
     stripLoader,
+    fulltext,
     destroy() {
       if (observer && typeof observer.disconnect === "function") {
         observer.disconnect();
+      }
+      if (fulltext && typeof fulltext.destroy === "function") {
+        fulltext.destroy();
       }
     },
   };

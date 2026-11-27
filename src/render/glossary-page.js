@@ -3,6 +3,8 @@
  * (`taxonomy/glossary.html`).
  */
 
+import { renderPwaHeadTags, renderSwRegisterScript } from "../pwa/generate-pwa.js";
+
 const HTML_ESCAPE_MAP = {
   "&": "&amp;",
   "<": "&lt;",
@@ -57,6 +59,7 @@ export function renderGlossaryPage(options = {}) {
     `<head>`,
     `  <meta charset="utf-8">`,
     `  <meta name="viewport" content="width=device-width, initial-scale=1">`,
+    `  ${renderPwaHeadTags("../")}`,
     `  <title>${escapeHtml(title)}</title>`,
     `  <link rel="stylesheet" href="${escapeHtml(cssHref)}">`,
     `  <link rel="stylesheet" href="${escapeHtml(taxonomyCssHref)}">`,
@@ -105,6 +108,7 @@ export function renderGlossaryPage(options = {}) {
     `    </footer>`,
     `  </div>`,
     `  <script type="module" src="${escapeHtml(appScriptHref)}"></script>`,
+    `  ${renderSwRegisterScript("../")}`,
     `</body>`,
     `</html>`,
     ``,

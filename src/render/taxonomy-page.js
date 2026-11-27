@@ -4,6 +4,8 @@
  * via the browser ES module `../assets/taxonomy-app.js`.
  */
 
+import { renderPwaHeadTags, renderSwRegisterScript } from "../pwa/generate-pwa.js";
+
 const HTML_ESCAPE_MAP = {
   "&": "&amp;",
   "<": "&lt;",
@@ -67,6 +69,7 @@ export function renderTaxonomyPage(options = {}) {
     `<head>`,
     `  <meta charset="utf-8">`,
     `  <meta name="viewport" content="width=device-width, initial-scale=1">`,
+    `  ${renderPwaHeadTags("../")}`,
     `  <title>${escapeHtml(title)}</title>`,
     `  <link rel="stylesheet" href="${escapeHtml(cssHref)}">`,
     `  <link rel="stylesheet" href="${escapeHtml(taxonomyCssHref)}">`,
@@ -94,6 +97,7 @@ export function renderTaxonomyPage(options = {}) {
     `    <footer class="tax-footer">USDA-NRCS National Cooperative Soil Survey &mdash; Keys to Soil Taxonomy (13th ed., 2022) &amp; Series Classification</footer>`,
     `  </div>`,
     `  <script type="module" src="${escapeHtml(appScriptHref)}"></script>`,
+    `  ${renderSwRegisterScript("../")}`,
     `</body>`,
     `</html>`,
     ``,

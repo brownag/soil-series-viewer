@@ -148,6 +148,102 @@ body {
   color: var(--usda-table-header-text, #ffffff);
 }
 
+/* Collapsible full-text OSD search panel */
+.home-fulltext-panel {
+  margin-bottom: 12px;
+  border: 1px solid var(--usda-footer-border, #B8B8B8);
+  background-color: var(--usda-nav-right-bg, #F2F2F2);
+}
+
+.home-fulltext-panel > summary {
+  cursor: pointer;
+  padding: 7px 12px;
+  font-weight: bold;
+  color: var(--usda-text, #000000);
+  background-color: var(--usda-nav-right-bg, #F2F2F2);
+}
+
+.home-fulltext-panel[open] > summary {
+  border-bottom: 1px solid var(--usda-footer-border, #B8B8B8);
+}
+
+.home-fulltext-body {
+  padding: 10px 12px;
+  background-color: var(--usda-surface-bg, #ffffff);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fulltext-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.fulltext-status {
+  font-size: var(--usda-font-chrome-size, 11px);
+  color: #333333;
+}
+
+.fulltext-results {
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.fulltext-results-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fulltext-result-item {
+  border: 1px solid var(--usda-footer-border, #B8B8B8);
+  background-color: var(--usda-nav-right-bg, #F2F2F2);
+  padding: 8px 10px;
+}
+
+.fulltext-result-link {
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.fulltext-result-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.fulltext-result-badge {
+  display: inline-block;
+  padding: 1px 5px;
+  border: 1px solid var(--usda-footer-border, #B8B8B8);
+  background-color: var(--usda-surface-bg, #ffffff);
+  font-size: 10px;
+}
+
+.fulltext-result-excerpt {
+  margin: 5px 0 0;
+  line-height: 1.4;
+  color: var(--usda-text, #000000);
+}
+
+.fulltext-result-excerpt mark {
+  background-color: #fff3a8;
+  color: inherit;
+  padding: 0 2px;
+}
+
+.fulltext-empty {
+  margin: 4px 0;
+  color: #333333;
+}
+
 /* Two-column layout: facet sidebar + gallery results */
 .home-layout {
   display: flex;

@@ -4,6 +4,8 @@
  * via the browser ES module `./assets/home-app.js`.
  */
 
+import { renderPwaHeadTags, renderSwRegisterScript } from "../pwa/generate-pwa.js";
+
 const HTML_ESCAPE_MAP = {
   "&": "&amp;",
   "<": "&lt;",
@@ -96,6 +98,7 @@ export function renderHomePage(options = {}) {
     `<head>`,
     `  <meta charset="utf-8">`,
     `  <meta name="viewport" content="width=device-width, initial-scale=1">`,
+    `  ${renderPwaHeadTags("./")}`,
     `  <title>${escapeHtml(title)}</title>`,
     `  <link rel="stylesheet" href="${escapeHtml(usdaCssHref)}">`,
     `  <link rel="stylesheet" href="${escapeHtml(homeCssHref)}">`,
@@ -131,6 +134,25 @@ export function renderHomePage(options = {}) {
     `        <button id="home-clear-btn" class="home-clear-btn" type="button">Clear filters</button>`,
     `      </div>`,
     `    </section>`,
+    `    <details id="fulltext-search-panel" class="home-fulltext-panel">`,
+    `      <summary>Full-Text OSD Search</summary>`,
+    `      <div class="home-fulltext-body">`,
+    `        <div class="fulltext-controls">`,
+    `          <label class="home-search-label" for="fulltext-search-input">Full Text:</label>`,
+    `          <input`,
+    `            id="fulltext-search-input"`,
+    `            class="home-search-input"`,
+    `            type="search"`,
+    `            data-fulltext-input`,
+    `            placeholder="Search full OSD text (horizons, remarks, setting)..."`,
+    `            autocomplete="off"`,
+    `          >`,
+    `          <button id="fulltext-search-clear" class="home-clear-btn" type="button" data-fulltext-clear>Clear</button>`,
+    `        </div>`,
+    `        <div id="fulltext-search-status" class="fulltext-status" data-fulltext-status role="status" aria-live="polite">Open to search full OSD descriptions.</div>`,
+    `        <div id="fulltext-search-results" class="fulltext-results" data-fulltext-results></div>`,
+    `      </div>`,
+    `    </details>`,
     `    <div class="home-layout">`,
     `      <aside class="home-facets" aria-label="Classification facets">`,
     `        <div class="home-facets-header">`,
@@ -162,6 +184,7 @@ export function renderHomePage(options = {}) {
     `    <footer class="home-footer">USDA-NRCS National Cooperative Soil Survey &mdash; Official Soil Series Descriptions &amp; Series Classification</footer>`,
     `  </div>`,
     `  <script type="module" src="${escapeHtml(appScriptSrc)}"></script>`,
+    `  ${renderSwRegisterScript("./")}`,
     `</body>`,
     `</html>`,
     ``,

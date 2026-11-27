@@ -6,6 +6,9 @@
 
 import { linkSeriesNames } from "./cross-links.js";
 import { buildTaxonBreadcrumb } from "../index/taxonomy-tree.js";
+import { buildPagefindMetaHtml } from "../index/pagefind.js";
+import { buildInteractiveProfileData } from "./profile-interactive-data.js";
+import { renderPwaHeadTags, renderSwRegisterScript } from "../pwa/generate-pwa.js";
 
 const CROSS_LINK_SECTIONS = new Set([
   "COMPETING SERIES",
@@ -327,6 +330,9 @@ export function renderSeriesPage(record, options = {}) {
 
   const hasCompetingPanel =
     typeof competingPanelHtml === "string" && competingPanelHtml.trim().length > 0;
+  const wrappedCompetingPanel = hasCompetingPanel
+    ? `<div class="osd-competing-ignore" data-pagefind-ignore>\n${competingPanelHtml}\n  </div>`
+    : "";
   let insertedCompetingPanel = false;
 
   const sectionHtmlBlocks = [];
@@ -352,7 +358,7 @@ export function renderSeriesPage(record, options = {}) {
           renderStandardSection(sectionKey, label, content, linkIndex, key)
         );
         if (sectionKey === "COMPETING SERIES" && hasCompetingPanel) {
-          sectionHtmlBlocks.push(competingPanelHtml);
+          sectionHtmlBlocks.push(wrappedCompetingPanel);
           insertedCompetingPanel = true;
         }
       }
@@ -374,7 +380,7 @@ export function renderSeriesPage(record, options = {}) {
   }
 
   if (hasCompetingPanel && !insertedCompetingPanel) {
-    sectionHtmlBlocks.push(competingPanelHtml);
+    sectionHtmlBlocks.push(wrappedCompetingPanel);
   }
 
   const overviewHtml = overview
@@ -386,7 +392,7 @@ export function renderSeriesPage(record, options = {}) {
 
   const qaHtml =
     typeof qaNotesHtml === "string" && qaNotesHtml.trim().length > 0
-      ? `\n${qaNotesHtml}`
+      ? `\n      <div class="osd-qa-ignore" data-pagefind-ignore>\n${qaNotesHtml}\n      </div>`
       : "";
 
   const breadcrumbItems = buildTaxonBreadcrumb(
@@ -403,6 +409,19 @@ export function renderSeriesPage(record, options = {}) {
           .join(" &rsaquo; ")}</nav>`
       : "";
 
+  const pagefindMetaHtml = buildPagefindMetaHtml(record);
+  const pagefindMetaBlock = pagefindMetaHtml
+    ? `\n      ${pagefindMetaHtml.replace(/\n/g, "\n      ")}`
+    : "";
+
+  const profileDataJson = JSON.stringify(buildInteractiveProfileData(record)).replace(
+    /</g,
+    "\\u003c"
+  );
+  const swRegisterHtml = renderSwRegisterScript("../../")
+    .replace("<script>", '<script type="text/javascript">')
+    .replace(/\n/g, "\n  ");
+
   return [
     `<!doctype html>`,
     `<html lang="en">`,
@@ -411,10 +430,11 @@ export function renderSeriesPage(record, options = {}) {
     `  <meta name="viewport" content="width=device-width, initial-scale=1">`,
     `  <title>Official Series Description - ${escapeHtml(displayName)} Series</title>`,
     `  <link rel="stylesheet" href="${escapeHtml(cssHref)}">`,
+    `  ${renderPwaHeadTags("../../")}`,
     `</head>`,
     `<body class="cUSDABackground">`,
     `  <main class="osd-page cLightBody">`,
-    `    <nav class="osd-chrome no-print" aria-label="Series links and downloads">`,
+    `    <nav class="osd-chrome no-print" data-pagefind-ignore aria-label="Series links and downloads">`,
     `      <div class="osd-chrome-nav">`,
     `        <a class="osd-home-link" href="../../index.html">&larr; All Series</a>`,
     `        <a href="../../taxonomy/index.html">Taxonomy</a>`,
@@ -422,6 +442,12 @@ export function renderSeriesPage(record, options = {}) {
     `      </div>`,
     `      <span>Official Soil Series Description &mdash; ${escapeHtml(displayName)}</span>${downloadsHtml}`,
     `    </nav>`,
+    `    <div class="osd-compare-bar no-print" data-pagefind-ignore>`,
+    `      <button type="button" id="osd-compare-toggle" class="osd-compare-toggle no-print" data-pagefind-ignore aria-pressed="false">Pin to Compare</button>`,
+    `      <span class="osd-compare-hint">Pin up to 4 series to compare profile strips side by side.</span>`,
+    `    </div>`,
+    `    <section id="osd-compare-tray" class="osd-compare-tray no-print" data-pagefind-ignore aria-label="Pinned profile comparison" hidden></section>`,
+    `    <div class="osd-content" data-pagefind-body>${pagefindMetaBlock}`,
     `    <header class="osd-header">`,
     `      <div class="osd-meta">`,
     metaLines.join("\n"),
@@ -430,11 +456,15 @@ export function renderSeriesPage(record, options = {}) {
     `    <article class="osd-narrative">`,
     `      <h1 class="osd-title">${escapeHtml(displayName)} SERIES</h1>${overviewHtml}${sectionsHtml}${qaHtml}`,
     `    </article>`,
+    `    </div>`,
     `    <footer class="osd-footer footertable">`,
     `      <div>National Cooperative Soil Survey</div>`,
     `      <div>U.S.A.</div>`,
     `    </footer>`,
     `  </main>`,
+    `  <script type="application/json" id="osd-profile-data">${profileDataJson}</script>`,
+    `  <script type="module" src="../../client/profile-interactive.js"></script>`,
+    `  ${swRegisterHtml}`,
     `</body>`,
     `</html>`,
     ``,

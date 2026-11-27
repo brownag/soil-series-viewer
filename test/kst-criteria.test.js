@@ -157,5 +157,8 @@ test("loadKstCriteriaIndex: extracts first non-null metadata and trims/filters c
 });
 
 test("DEFAULT_KST_DIR points to expected SoilKnowledgeBase path", () => {
-  assert.equal(DEFAULT_KST_DIR, "/home/andrew/workspace/SoilKnowledgeBase/inst/extdata/KST");
+  assert.equal(
+    DEFAULT_KST_DIR,
+    process.env.OSD_KST_DIR || "/home/andrew/workspace/SoilKnowledgeBase/inst/extdata/KST"
+  );
 });

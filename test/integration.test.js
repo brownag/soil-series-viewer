@@ -8,7 +8,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
 
-import { munsellToHex } from "/home/andrew/workspace/SoilProfiles.js/dist/index.js";
+import { munsellToHex } from "../src/lib/soil-profiles.js";
 import { buildSite } from "../src/cli/build.js";
 
 const execFileAsync = promisify(execFile);

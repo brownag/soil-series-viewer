@@ -41,6 +41,14 @@ test("buildGlossaryIndex merges real local SKB featurelist and DST dst-data.json
   );
   assert.ok(index.groups.length >= 10);
 
+  const dstData = JSON.parse(fs.readFileSync(DEFAULT_DST_DATA_PATH, "utf8"));
+  const hasDstGlossary =
+    (Array.isArray(dstData?.glossary) && dstData.glossary.length > 0) ||
+    (dstData?.glossary &&
+      typeof dstData.glossary === "object" &&
+      Object.keys(dstData.glossary).length > 0);
+  const expectedSources = hasDstGlossary ? ["SKB-KST-2014", "DST"] : ["SKB-KST-2014"];
+
   const mineral = index.terms.find(
     (entry) => entry.term === "Mineral Soil Material"
   );
@@ -49,7 +57,7 @@ test("buildGlossaryIndex merges real local SKB featurelist and DST dst-data.json
   assert.equal(mineral.group, "Soil Materials");
   assert.equal(mineral.chapter, 2);
   assert.equal(mineral.page, 3);
-  assert.deepEqual(mineral.sources, ["SKB-KST-2014", "DST"]);
+  assert.deepEqual(mineral.sources, expectedSources);
   assert.ok(mineral.definition.includes("Mineral soil material"));
 
   // Duplicate featurelist entry with 0-len second item keeps the longer non-empty definition.
@@ -59,7 +67,7 @@ test("buildGlossaryIndex merges real local SKB featurelist and DST dst-data.json
   assert.ok(mineralogy);
   assert.equal(mineralogy.group, "Mineral Family");
   assert.ok(mineralogy.definition.length > 100);
-  assert.deepEqual(mineralogy.sources, ["SKB-KST-2014", "DST"]);
+  assert.deepEqual(mineralogy.sources, expectedSources);
 
   // Verify groups are sorted alphabetically.
   const sortedGroups = [...index.groups].sort(

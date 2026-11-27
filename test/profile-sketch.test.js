@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { munsellToHex } from "/home/andrew/workspace/SoilProfiles.js/dist/index.js";
+import { munsellToHex } from "../src/lib/soil-profiles.js";
 import { loadCorpus } from "../src/loader/index.js";
 import { renderProfileSketch } from "../src/render/profile-sketch.js";
 

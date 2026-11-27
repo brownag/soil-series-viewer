@@ -4,7 +4,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { munsellToHex } from "/home/andrew/workspace/SoilProfiles.js/dist/index.js";
+import { munsellToHex } from "../src/lib/soil-profiles.js";
 import { loadCorpus } from "../src/loader/index.js";
 import { FALLBACK_HORIZON_COLOR } from "../src/render/profile-sketch.js";
 import { buildInteractiveProfileData } from "../src/render/profile-interactive-data.js";

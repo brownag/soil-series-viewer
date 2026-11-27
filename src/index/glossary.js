@@ -203,6 +203,17 @@ export function buildGlossaryIndex(options = {}) {
   const terms = Array.from(byKey.values()).sort((a, b) =>
     compareAlphabetical(a.term, b.term)
   );
+  const usedIds = new Set();
+  for (const entry of terms) {
+    const baseId = entry.id || "term";
+    let candidate = baseId;
+    let suffix = 2;
+    while (usedIds.has(candidate)) {
+      candidate = `${baseId}-${suffix++}`;
+    }
+    entry.id = candidate;
+    usedIds.add(candidate);
+  }
   const groups = Array.from(new Set(terms.map((t) => t.group))).sort(
     compareAlphabetical
   );

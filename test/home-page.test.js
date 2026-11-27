@@ -47,6 +47,8 @@ test("renderHomePage produces complete USDA-styled HTML with required links and 
     html.includes("Official Soil Series Descriptions &amp; Series Classification"),
     "expected USDA header title"
   );
+  assert.match(html, /<a href="taxonomy\/index\.html">Taxonomy Tree<\/a>/);
+  assert.match(html, /<a href="glossary\/index\.html">Glossary &amp; Features<\/a>/);
 
   for (const cls of [
     "home-page",

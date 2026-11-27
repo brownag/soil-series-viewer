@@ -351,10 +351,10 @@ test("renderSeriesPage: renders home link, cross-links in COMPETING/ASSOCIATED o
     qaNotesHtml,
   });
 
-  // Home link in .osd-chrome
+  // Home, Taxonomy, and Glossary links in .osd-chrome
   assert.match(
     html,
-    /<nav class="osd-chrome no-print"[\s\S]*?<a class="osd-home-link" href="\.\.\/\.\.\/index\.html">&larr; All Series<\/a>[\s\S]*?<\/nav>/
+    /<nav class="osd-chrome no-print"[\s\S]*?<a class="osd-home-link" href="\.\.\/\.\.\/index\.html">&larr; All Series<\/a>[\s\S]*?<a href="\.\.\/\.\.\/taxonomy\/index\.html">Taxonomy<\/a>[\s\S]*?<a href="\.\.\/\.\.\/glossary\/index\.html">Glossary<\/a>[\s\S]*?<\/nav>/
   );
 
   // Cross-links in COMPETING SERIES and GEOGRAPHICALLY ASSOCIATED SOILS, not self, not REMARKS
@@ -402,4 +402,81 @@ test("renderSeriesPage: renders home link, cross-links in COMPETING/ASSOCIATED o
   const qaPos = noCompArticle.indexOf("osd-qa-notes");
   assert.ok(remarksPos !== -1 && panelPos !== -1 && qaPos !== -1);
   assert.ok(remarksPos < panelPos && panelPos < qaPos);
+});
+
+test("renderSeriesPage: renders .osd-taxon-breadcrumb with hash links and optional KST tooltips", () => {
+  const taxRecord = {
+    key: "AMADOR",
+    name: "Amador",
+    letter: "A",
+    status: "Established",
+    hasSc: true,
+    hasSkb: true,
+    sc: {
+      areasymbol: "CA",
+      taxorder: "Inceptisols",
+      taxsuborder: "Xerepts",
+      taxgrtgroup: "Haploxerepts",
+      taxsubgrp: "Typic Haploxerepts",
+    },
+    skb: {
+      SERIES: "AMADOR",
+      STATES: "CA",
+    },
+    horizons: [],
+  };
+
+  // Without kstCriteriaIndex (backwards-compatible default)
+  const htmlNoKst = renderSeriesPage(taxRecord);
+  const headerNoKst = htmlNoKst.match(/<header class="osd-header">([\s\S]*?)<\/header>/)?.[1] ?? "";
+  assert.ok(headerNoKst.includes('class="osd-taxon-breadcrumb no-print"'));
+  assert.ok(
+    headerNoKst.indexOf('class="osd-meta"') < headerNoKst.indexOf('class="osd-taxon-breadcrumb no-print"')
+  );
+  assert.match(
+    headerNoKst,
+    /<nav class="osd-taxon-breadcrumb no-print" aria-label="Taxonomic classification">[\s\S]*?<a href="\.\.\/\.\.\/taxonomy\/index\.html#inceptisols"[^>]*>Inceptisols<\/a> &rsaquo; <a href="\.\.\/\.\.\/taxonomy\/index\.html#inceptisols\/xerepts"[^>]*>Xerepts<\/a> &rsaquo; <a href="\.\.\/\.\.\/taxonomy\/index\.html#inceptisols\/xerepts\/haploxerepts"[^>]*>Haploxerepts<\/a> &rsaquo; <a href="\.\.\/\.\.\/taxonomy\/index\.html#inceptisols\/xerepts\/haploxerepts\/typic-haploxerepts"[^>]*>Typic Haploxerepts<\/a><\/nav>/
+  );
+  assert.ok(!headerNoKst.includes("KST Ch."));
+
+  // With kstCriteriaIndex
+  const kstCriteriaIndex = {
+    codesByName: new Map([
+      ["inceptisols", "F"],
+      ["xerepts", "FG"],
+      ["haploxerepts", "FGC"],
+      ["typic haploxerepts", "FGCA"],
+    ]),
+    byCode: new Map([
+      ["F", { code: "F", name: "Inceptisols", chapter: 11, page: 161 }],
+      ["FG", { code: "FG", name: "Xerepts", chapter: 11, page: 201 }],
+      ["FGC", { code: "FGC", name: "Haploxerepts", chapter: 11, page: 203 }],
+    ]),
+  };
+
+  const htmlWithKst = renderSeriesPage(taxRecord, { kstCriteriaIndex });
+  assert.match(
+    htmlWithKst,
+    /<a href="\.\.\/\.\.\/taxonomy\/index\.html#inceptisols" title="[^"]*KST Ch\. 11, p\. 161[^"]*">Inceptisols<\/a>/
+  );
+  assert.match(
+    htmlWithKst,
+    /<a href="\.\.\/\.\.\/taxonomy\/index\.html#inceptisols\/xerepts" title="[^"]*KST Ch\. 11, p\. 201[^"]*">Xerepts<\/a>/
+  );
+  assert.match(
+    htmlWithKst,
+    /<a href="\.\.\/\.\.\/taxonomy\/index\.html#inceptisols\/xerepts\/haploxerepts" title="[^"]*KST Ch\. 11, p\. 203[^"]*">Haploxerepts<\/a>/
+  );
+  assert.match(
+    htmlWithKst,
+    /<a href="\.\.\/\.\.\/taxonomy\/index\.html#inceptisols\/xerepts\/haploxerepts\/typic-haploxerepts" title="[^"]*">Typic Haploxerepts<\/a>/
+  );
+
+  // Without taxonomy fields, breadcrumb is omitted
+  const noTaxHtml = renderSeriesPage({
+    key: "NOTAX",
+    name: "NoTax",
+    sc: { areasymbol: "CA" },
+  });
+  assert.ok(!noTaxHtml.includes("osd-taxon-breadcrumb"));
 });

@@ -5,6 +5,7 @@
  */
 
 import { linkSeriesNames } from "./cross-links.js";
+import { buildTaxonBreadcrumb } from "../index/taxonomy-tree.js";
 
 const CROSS_LINK_SECTIONS = new Set([
   "COMPETING SERIES",
@@ -225,8 +226,34 @@ function renderStandardSection(sectionKey, label, content, linkIndex = null, sel
  * @param {object|null} [options.linkIndex=null] Optional precompiled cross-link index
  * @param {string|null} [options.competingPanelHtml=null] Optional pre-rendered competing-series panel HTML
  * @param {string|null} [options.qaNotesHtml=null] Optional pre-rendered QA notes `<details>` HTML
+ * @param {object|null} [options.kstCriteriaIndex=null] Optional KST 2022 criteria index (`{ byCode, codesByName }`)
  * @returns {string} Complete HTML document
  */
+function formatBreadcrumbTooltip(item, kstCriteriaIndex) {
+  const base = `${item.rank}: ${item.name}`;
+  const entry =
+    item.code && typeof kstCriteriaIndex?.byCode?.get === "function"
+      ? kstCriteriaIndex.byCode.get(item.code)
+      : null;
+  if (!entry) {
+    return base;
+  }
+  const hasChapter =
+    entry.chapter !== null && entry.chapter !== undefined && String(entry.chapter).trim() !== "";
+  const hasPage =
+    entry.page !== null && entry.page !== undefined && String(entry.page).trim() !== "";
+  if (hasChapter && hasPage) {
+    return `${base} — KST Ch. ${entry.chapter}, p. ${entry.page}`;
+  }
+  if (hasChapter) {
+    return `${base} — KST Ch. ${entry.chapter}`;
+  }
+  if (hasPage) {
+    return `${base} — KST p. ${entry.page}`;
+  }
+  return base;
+}
+
 export function renderSeriesPage(record, options = {}) {
   if (!record || typeof record !== "object") {
     throw new TypeError("Series record must be an object");
@@ -240,6 +267,7 @@ export function renderSeriesPage(record, options = {}) {
     linkIndex = null,
     competingPanelHtml = null,
     qaNotesHtml = null,
+    kstCriteriaIndex = null,
   } = options;
 
   const skb = record.skb && typeof record.skb === "object" ? record.skb : null;
@@ -361,6 +389,20 @@ export function renderSeriesPage(record, options = {}) {
       ? `\n${qaNotesHtml}`
       : "";
 
+  const breadcrumbItems = buildTaxonBreadcrumb(
+    record,
+    kstCriteriaIndex?.codesByName ?? null
+  );
+  const breadcrumbHtml =
+    breadcrumbItems.length > 0
+      ? `\n      <nav class="osd-taxon-breadcrumb no-print" aria-label="Taxonomic classification">${breadcrumbItems
+          .map((item) => {
+            const tooltip = formatBreadcrumbTooltip(item, kstCriteriaIndex);
+            return `<a href="../../taxonomy/index.html#${escapeHtml(item.hashPath)}" title="${escapeHtml(tooltip)}">${escapeHtml(item.name)}</a>`;
+          })
+          .join(" &rsaquo; ")}</nav>`
+      : "";
+
   return [
     `<!doctype html>`,
     `<html lang="en">`,
@@ -373,13 +415,17 @@ export function renderSeriesPage(record, options = {}) {
     `<body class="cUSDABackground">`,
     `  <main class="osd-page cLightBody">`,
     `    <nav class="osd-chrome no-print" aria-label="Series links and downloads">`,
-    `      <a class="osd-home-link" href="../../index.html">&larr; All Series</a>`,
+    `      <div class="osd-chrome-nav">`,
+    `        <a class="osd-home-link" href="../../index.html">&larr; All Series</a>`,
+    `        <a href="../../taxonomy/index.html">Taxonomy</a>`,
+    `        <a href="../../glossary/index.html">Glossary</a>`,
+    `      </div>`,
     `      <span>Official Soil Series Description &mdash; ${escapeHtml(displayName)}</span>${downloadsHtml}`,
     `    </nav>`,
     `    <header class="osd-header">`,
     `      <div class="osd-meta">`,
     metaLines.join("\n"),
-    `      </div>`,
+    `      </div>${breadcrumbHtml}`,
     `    </header>`,
     `    <article class="osd-narrative">`,
     `      <h1 class="osd-title">${escapeHtml(displayName)} SERIES</h1>${overviewHtml}${sectionsHtml}${qaHtml}`,

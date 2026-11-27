@@ -147,6 +147,25 @@ table.osd-table td {
   white-space: nowrap;
 }
 
+.osd-chrome-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.home-header-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 5px 12px;
+  background-color: var(--usda-surface-bg);
+  border-top: 1px solid var(--usda-footer-border);
+  font-family: var(--usda-font-chrome);
+  font-size: var(--usda-font-chrome-size);
+}
+
 a.osd-series-link:link,
 a.osd-series-link:visited {
   text-decoration: underline;
@@ -168,6 +187,20 @@ a.osd-series-link:hover {
   font-size: 14px;
   line-height: 1.45;
   margin-bottom: 10px;
+}
+
+.osd-taxon-breadcrumb {
+  font-family: var(--usda-font-chrome);
+  font-size: var(--usda-font-chrome-size);
+  line-height: 1.4;
+  margin-top: 6px;
+  padding: 4px 8px;
+  background-color: var(--usda-nav-right-bg);
+  border-left: 3px solid var(--usda-table-border);
+}
+
+.osd-taxon-breadcrumb a {
+  white-space: nowrap;
 }
 
 .osd-location {
@@ -397,6 +430,7 @@ a.osd-series-link:hover {
 
   .osd-chrome,
   .osd-downloads,
+  .osd-taxon-breadcrumb,
   .osd-qa-notes,
   .no-print {
     display: none;

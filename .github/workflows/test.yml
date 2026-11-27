@@ -1,0 +1,52 @@
+name: Test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+concurrency:
+  group: test-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      UPSTREAM_DIR: ${{ runner.temp }}/upstream
+      OSD_SC_PATH: ${{ runner.temp }}/upstream/OSDRegistry/SC/SCDB.csv
+      OSD_SKB_DIR: ${{ runner.temp }}/upstream/SoilKnowledgeBase/inst/extdata/OSD
+      OSD_TXT_DIR: ${{ runner.temp }}/upstream/OSDRegistry/OSD
+      OSD_KST_DIR: ${{ runner.temp }}/upstream/SoilKnowledgeBase/inst/extdata/KST
+      OSD_FEATURELIST_PATH: ${{ runner.temp }}/upstream/SoilKnowledgeBase/inst/extdata/KST/2014_KST_EN_featurelist.json
+      OSD_DST_DATA_PATH: ${{ runner.temp }}/upstream/DST/data/dst-data.json
+      SOIL_PROFILES_PATH: ${{ runner.temp }}/upstream/SoilProfiles.js/dist/index.js
+
+    steps:
+      - name: Checkout soil-series-viewer
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Shallow-clone upstream data repositories
+        run: |
+          mkdir -p "$UPSTREAM_DIR"
+          git clone --depth 1 https://github.com/ncss-tech/OSDRegistry.git "$UPSTREAM_DIR/OSDRegistry"
+          git clone --depth 1 https://github.com/ncss-tech/SoilKnowledgeBase.git "$UPSTREAM_DIR/SoilKnowledgeBase"
+          git clone --depth 1 https://github.com/brownag/SoilProfiles.js.git "$UPSTREAM_DIR/SoilProfiles.js"
+          git clone --depth 1 https://github.com/brownag/DST.git "$UPSTREAM_DIR/DST"
+
+      - name: Ensure SoilProfiles.js bundle is built
+        run: |
+          if [ ! -f "$SOIL_PROFILES_PATH" ]; then
+            cd "$UPSTREAM_DIR/SoilProfiles.js"
+            npm ci
+            npm run build
+          fi
+
+      - name: Run unit and integration tests
+        run: npm test

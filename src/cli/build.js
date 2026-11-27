@@ -43,6 +43,13 @@ import { renderHomePage } from "../render/home-page.js";
 import { renderProfileSketch } from "../render/profile-sketch.js";
 import { renderSeriesPage } from "../render/series-page.js";
 import { renderTaxonomyPage } from "../render/taxonomy-page.js";
+import {
+  DEFAULT_TEMPLATE_VERSION,
+  computeSeriesHash,
+  loadBuildCache,
+  saveBuildCache,
+  shouldRebuildSeries,
+} from "./incremental-cache.js";
 
 /**
  * Default sketch renderer hook for `buildSite`.
@@ -138,6 +145,8 @@ export function parseCliArgs(argv) {
   let dstDataPath = DEFAULT_DST_DATA_PATH;
   let featurelistPath = DEFAULT_FEATURELIST_PATH;
   let pagefind = false;
+  let incremental = false;
+  let cacheFile = null;
   let help = false;
 
   for (let i = 0; i < argv.length; i++) {
@@ -146,6 +155,12 @@ export function parseCliArgs(argv) {
       help = true;
     } else if (arg === "--pagefind") {
       pagefind = true;
+    } else if (arg === "--incremental") {
+      incremental = true;
+    } else if (arg === "--cache-file") {
+      cacheFile = argv[++i];
+    } else if (arg.startsWith("--cache-file=")) {
+      cacheFile = arg.slice("--cache-file=".length) || null;
     } else if (arg === "--series") {
       const val = argv[++i];
       if (!val) {
@@ -215,6 +230,8 @@ export function parseCliArgs(argv) {
     dstDataPath,
     featurelistPath,
     pagefind,
+    incremental,
+    cacheFile,
     help,
   };
 }
@@ -274,6 +291,9 @@ export async function buildSite(options = {}) {
     renderSketch = defaultRenderSketch,
     pagefind = false,
     pagefindRunner,
+    incremental = false,
+    cacheFile = null,
+    templateVersion = DEFAULT_TEMPLATE_VERSION,
   } = options;
 
   const { records, report } = await loadCorpus({
@@ -392,7 +412,14 @@ export async function buildSite(options = {}) {
     )
   );
 
+  const resolvedCachePath =
+    cacheFile ? path.resolve(cacheFile) : path.join(resolvedOut, ".build-cache.json");
+  const prevCache = incremental ? loadBuildCache(resolvedCachePath) : null;
+  const nextHashes = incremental ? { ...prevCache.hashes } : {};
+
   let builtCount = 0;
+  let rebuiltCount = 0;
+  let skippedCount = 0;
   let txtCopied = 0;
   let jsonCopied = 0;
 
@@ -404,6 +431,15 @@ export async function buildSite(options = {}) {
       batch.map(async (record) => {
         const htmlRel = keyToRelativePath(record.key, "html");
         const htmlDest = path.join(osdDocsRoot, htmlRel);
+
+        if (incremental) {
+          const seriesHash = computeSeriesHash(record, templateVersion);
+          nextHashes[record.key] = seriesHash;
+          if (!shouldRebuildSeries(record.key, seriesHash, prevCache, htmlDest)) {
+            skippedCount++;
+            return;
+          }
+        }
 
         const txtRel = keyToRelativePath(record.key, "txt");
         const txtSrc = path.join(osdTxtDir, txtRel);
@@ -442,8 +478,16 @@ export async function buildSite(options = {}) {
         });
         await fsp.writeFile(htmlDest, html, "utf8");
         builtCount++;
+        rebuiltCount++;
       })
     );
+  }
+
+  if (incremental) {
+    await saveBuildCache(resolvedCachePath, {
+      templateVersion,
+      hashes: nextHashes,
+    });
   }
 
   const pagefindResult = pagefind
@@ -453,6 +497,8 @@ export async function buildSite(options = {}) {
   return {
     outDir: resolvedOut,
     builtCount,
+    rebuiltCount,
+    skippedCount,
     txtCopied,
     jsonCopied,
     stripShards: shardEntries.length,
